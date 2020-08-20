@@ -13,7 +13,7 @@ namespace TodoApi
             services.AddDbContext<TodoContext>(opt => 
                 opt.UseInMemoryDatabase("TodoList"));
             services.AddMvc()
-                    .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+                    .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
         public void Configure(IApplicationBuilder app)
