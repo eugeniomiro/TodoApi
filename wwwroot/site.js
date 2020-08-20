@@ -1,8 +1,11 @@
 const uri = 'api/todo';
 let todos = null;
+
 function getCount(data) {
     const el = $('#counter');
+    const todoList = $("#todo-list");
     let name = 'to-do';
+
     if (data) {
         if (data > 1) {
             name = 'to-dos';
@@ -11,6 +14,11 @@ function getCount(data) {
     } else {
         el.html('No ' + name);
     }
+
+    if (data || 0 > 0)
+        todoList.show();
+    else
+        todoList.hide();
 }
 
 $(document).ready(function () {
