@@ -90,11 +90,11 @@ function editItem(id) {
     $('#spoiler').css({ 'display': 'block' });
 }
 
-$('.my-form').on('submit', function () {
+$('.edit-form').on('submit', function () {
     const item = {
         'name': $('#edit-name').val(),
         'isComplete': $('#edit-isComplete').is(':checked'),
-        'id': $('#edit-id').val()
+        'id': new Number($('#edit-id').val())
     };
 
     $.ajax({
