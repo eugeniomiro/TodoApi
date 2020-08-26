@@ -4,7 +4,7 @@
   "description": ".NET Core WebApi project to manage todo items",
   "main": "index.js",
   "scripts": {
-    "test": "mocha \"client.test\"",
+    "test": "mocha  --reporter=nyan \"client.test\"",
     "prepublish": [
       "npm install",
       "gulp clean",
@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/eugeniomiro/TodoApi#readme",
   "devDependencies": {
+    "chai": "^4.2.0",
     "gulp": "^4.0.2",
     "mocha": "^8.1.1",
     "rimraf": "^3.0.2"
