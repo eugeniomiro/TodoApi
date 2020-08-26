@@ -7,7 +7,7 @@ var gulp = require("gulp"),
     cssmin = require("gulp-cssmin"),
     uglify = require("gulp-uglify");
 
-var webroot = "./webroot/";
+var webroot = "./public/";
 
 var paths = {
     js: webroot + "js/**/*.js",
