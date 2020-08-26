@@ -1,0 +1,29 @@
+{
+  "name": "todoapi",
+  "version": "1.0.0",
+  "description": ".NET Core WebApi project to manage todo items",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha \"client.test\"",
+    "prepublish": [
+      "npm install",
+      "gulp clean",
+      "gulp min"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eugeniomiro/TodoApi.git"
+  },
+  "author": "Eugenio Miró",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/eugeniomiro/TodoApi/issues"
+  },
+  "homepage": "https://github.com/eugeniomiro/TodoApi#readme",
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "mocha": "^8.1.1",
+    "rimraf": "^3.0.2"
+  }
+}
