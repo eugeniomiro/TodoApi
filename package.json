@@ -26,6 +26,7 @@
     "gulp": "^4.0.2",
     "mocha": "^8.1.1",
     "rimraf": "^3.0.2",
+    "sinon": "^9.2.4",
     "yargs-parser": ">=5.0.0-security.0"
   }
 }
