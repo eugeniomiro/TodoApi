@@ -6,7 +6,8 @@ var gulp = require("gulp"),
     concat = require("gulp-concat"),
     cssmin = require("gulp-cssmin"),
     uglify = require("gulp-uglify"),
-    server = require('karma').Server;
+    server = require('karma').Server,
+    run = require('gulp-run');
 
 var webroot = "./public/";
 
@@ -55,6 +56,7 @@ gulp.task('test', function(done) {
 gulp.task('tdd', function(done) {
     new server({
         configFile: __dirname + "/karma.conf.js",
-        singleRun: false,
+        autoWatch: true,
+        singleRun: false
     }, done).start();
 });
