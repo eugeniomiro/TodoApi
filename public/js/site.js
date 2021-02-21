@@ -112,6 +112,9 @@ $('.edit-form').on('submit', function () {
     return false;
 });
 
+$('.add-form').on('submit', addItem);
+$('.close-spoiler').on('click', closeInput);
+
 function closeInput() {
     $('#spoiler').css({ 'display': 'none' });
 }
