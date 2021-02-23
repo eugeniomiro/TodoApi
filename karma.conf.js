@@ -17,20 +17,19 @@ module.exports = function(config) {
     files: [
       "https://code.jquery.com/jquery-3.3.1.min.js",
       'test/**/*.js',
-      'public/js/**/*.js'
+      'js/**/*.js'
     ],
 
 
     // list of files / patterns to exclude
     exclude: [
-      'public/js/**/*.min.js',
     ],
 
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      'public/js/**/*.js': ['coverage']
+      'js/**/*.js': ['coverage']
     },
 
 

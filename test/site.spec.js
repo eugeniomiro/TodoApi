@@ -3,7 +3,7 @@
 // running on node?
 if (typeof require !== 'undefined') {
     var assert = require('chai').assert;
-    var getCount = require('../public/js/getCount').getCount;
+    var getCount = require('../js/getCount').getCount;
 }
 
 describe('getCount()', function () {
