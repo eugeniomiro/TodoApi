@@ -1,4 +1,9 @@
 'use strict';
+// running on node?
+if (typeof require !== 'undefined') {
+    var assert = require('chai').assert;
+    var getCount = require('../public/js/site').getCount;
+}
 
 describe('getCount()', function () {
     const tests = [
