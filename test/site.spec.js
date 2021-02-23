@@ -3,7 +3,8 @@
 // running on node?
 if (typeof require !== 'undefined') {
     var assert = require('chai').assert;
-    var getCount = require('../js/getCount').getCount;
+    var { getCount } = require('../js/getCount');
+    var { closeInput } = require("../js/closeInput");
 }
 
 describe('getCount()', function () {
@@ -42,5 +43,24 @@ describe('getCount()', function () {
                 table = null;
             });
         });
+    });
+});
+
+describe('closeInput()', function() {
+    let spoiler;
+    before(function() {
+        spoiler = $("<div id='spoiler'>");
+        $(document.body)
+            .append(spoiler);
+    });
+    it('leaves the spoiler element hidden', function() {
+        assert.equal($("#spoiler").css('display'), 'block');
+        closeInput();
+        assert.equal($("#spoiler").css('display'), 'none');
+    });
+
+    after(function() {
+        spoiler.remove();
+        spoiler = null;
     });
 });

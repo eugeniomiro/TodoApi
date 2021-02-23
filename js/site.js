@@ -88,11 +88,6 @@ function onSubmitForm() {
     return false;
 }
 
-
-function closeInput() {
-    $('#spoiler').css({ 'display': 'none' });
-}
-
 function addEventHandlers() {
     $('.edit-form').on('submit', onSubmitForm);
     $('.add-form').on('submit', addItem);
@@ -103,8 +98,3 @@ $(function () {
     addEventHandlers();
     getData();
 });
-
-// If we're running under Node, 
-if(typeof exports !== 'undefined') {
-    exports.closeInput = closeInput;
-}
