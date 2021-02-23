@@ -44,7 +44,7 @@ gulp.task("min:css", function() {
 });
 
 gulp.task("min", gulp.series("min:js", "min:css"));
-
+gulp.task("clean-min", gulp.series("clean", "min"));
 gulp.task('test', function(done) {
     new server({
         configFile: __dirname + "/karma.conf.js",

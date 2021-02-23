@@ -1,16 +1,17 @@
 'use strict';
+
 // running on node?
 if (typeof require !== 'undefined') {
     var assert = require('chai').assert;
-    var getCount = require('../public/js/site').getCount;
+    var getCount = require('../public/js/getCount').getCount;
 }
 
 describe('getCount()', function () {
     const tests = [
         { arg: null, expected: { todo: 'No to-do', display: 'none' } },
-        { arg: 0, expected: { todo: 'No to-do', display: 'none' } },
-        { arg: 1, expected: { todo: '1 to-do', display: 'table' } },
-        { arg: 2, expected: { todo: '2 to-dos', display: 'table' } },
+        { arg: 0,    expected: { todo: 'No to-do', display: 'none' } },
+        { arg: 1,    expected: { todo: '1 to-do',  display: 'table' } },
+        { arg: 2,    expected: { todo: '2 to-dos', display: 'table' } },
     ];
     tests.forEach(({ arg, expected }) => {
         describe(`calling getCount(${arg === null ? '' : arg})`, () => {

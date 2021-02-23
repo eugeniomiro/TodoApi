@@ -3,3 +3,5 @@ bin/
 node_modules/
 .nyc_output/
 coverage/
+public/css/site.min.css
+public/js/site.min.js

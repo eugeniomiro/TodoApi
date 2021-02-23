@@ -1,30 +1,6 @@
 const uri = 'api/todo';
 let todos = null;
 
-function getCount(data) {
-    const el = $('#counter');
-    const todoList = $("#todo-list");
-    let name = 'to-do';
-
-    if (data) {
-        if (data > 1) {
-            name = 'to-dos';
-        }
-        el.text(data + ' ' + name);
-    } else {
-        el.html('No ' + name);
-    }
-
-    if (data || 0 > 0)
-        todoList.show();
-    else
-        todoList.hide();
-}
-
-$(document).ready(function () {
-    getData();
-});
-
 function getData() {
     $.ajax({
         type: 'GET',
@@ -90,7 +66,7 @@ function editItem(id) {
     $('#spoiler').css({ 'display': 'block' });
 }
 
-$('.edit-form').on('submit', function () {
+function onSubmitForm() {
     const item = {
         'name': $('#edit-name').val(),
         'isComplete': $('#edit-isComplete').is(':checked'),
@@ -110,17 +86,25 @@ $('.edit-form').on('submit', function () {
 
     closeInput();
     return false;
-});
+}
 
-$('.add-form').on('submit', addItem);
-$('.close-spoiler').on('click', closeInput);
 
 function closeInput() {
     $('#spoiler').css({ 'display': 'none' });
 }
 
+function addEventHandlers() {
+    $('.edit-form').on('submit', onSubmitForm);
+    $('.add-form').on('submit', addItem);
+    $('.close-spoiler').on('click', closeInput);
+}
+
+$(function () {
+    addEventHandlers();
+    getData();
+});
+
 // If we're running under Node, 
 if(typeof exports !== 'undefined') {
     exports.closeInput = closeInput;
-    exports.getCount = getCount;
 }
