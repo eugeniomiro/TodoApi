@@ -94,7 +94,7 @@ function addEventHandlers() {
     $('.close-spoiler').on('click', closeInput);
 }
 
-$(function () {
+function onReady() {
     addEventHandlers();
     getData();
-});
+}
