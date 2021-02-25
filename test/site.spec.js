@@ -3,19 +3,48 @@
 // running on node?
 if (typeof require !== 'undefined') {
     var assert = require('chai').assert;
-    var { getCount } = require('../js/getCount');
-    var { closeInput } = require("../js/closeInput");
+    var { todoes, getDataSuccess, closeInput, updateCount } = require("../js/site");
+} else {
+    todoes = () => todos;
 }
 
-describe('getCount()', function () {
+describe('getDataSuccess()', function() {
     const tests = [
-        { arg: null, expected: { todo: 'No to-do', display: 'none' } },
-        { arg: 0,    expected: { todo: 'No to-do', display: 'none' } },
+        { data: [], expectedTodosLength: 0 },
+        { data: [{ id: 1, name: 'me', isComplete: false}], expectedTodosLength: 1 },
+        { data: [{ id: 1, name: 'me', isComplete: false},
+                 { id: 2, name: 'you', isComplete: true}], expectedTodosLength: 2 }
+    ];
+    tests.forEach(test => {
+        describe(`with data = ${JSON.stringify(test.data)}`, function() {
+            before(function() {
+                $(document.body).append("<tbody id='todos'>");
+                getDataSuccess(test.data, updateCount);
+            });
+            it('should update todos variable', function() {
+                assert.isNotNull(todoes());
+            });
+            it(`should have todos length equal ${test.expectedTodosLength}`, function() {
+                assert.equal(todoes().length, test.expectedTodosLength);
+            });
+            it(`should add ${test.expectedTodosLength} tr(s) to #todos`, () => {
+                assert.equal($("#todos").find("tr").length, test.expectedTodosLength);
+            });
+            after(function() {
+            });
+        });
+    });
+});
+
+describe('updateCount()', function () {
+    const tests = [
+        { arg: null, expected: { todo: 'No to-do', display: 'none'  } },
+        { arg: 0,    expected: { todo: 'No to-do', display: 'none'  } },
         { arg: 1,    expected: { todo: '1 to-do',  display: 'table' } },
         { arg: 2,    expected: { todo: '2 to-dos', display: 'table' } },
     ];
     tests.forEach(({ arg, expected }) => {
-        describe(`calling getCount(${arg === null ? '' : arg})`, () => {
+        describe(`calling updateCount(${arg === null ? '' : arg})`, () => {
             let p;
             let table;
 
@@ -26,7 +55,7 @@ describe('getCount()', function () {
                 $(document.body)
                     .append(p)
                     .append(table);
-                getCount(arg);
+                updateCount(arg);
             });
 
             it(`should display '${expected.todo}'`, function () {

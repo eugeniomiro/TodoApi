@@ -5,21 +5,7 @@ function getData() {
     $.ajax({
         type: 'GET',
         url: uri,
-        success: function (data) {
-            $('#todos').empty();
-            getCount(data.length);
-            $.each(data, function (key, item) {
-                const checked = item.isComplete ? 'checked' : '';
-
-                $('<tr><td><input disabled="true" type="checkbox" ' + checked + '></td>' +
-                    '<td>' + item.name + '</td>' +
-                    '<td><button onclick="editItem(' + item.id + ')">Edit</button></td>' +
-                    '<td><button onclick="deleteItem(' + item.id + ')">Delete</button></td>' +
-                    '</tr>').appendTo($('#todos'));
-            });
-
-            todos = data;
-        }
+        success: function (data) { getDataSuccess(data, updateCount); }
     });
 }
 
@@ -36,7 +22,7 @@ function addItem() {
         contentType: 'application/json',
         data: JSON.stringify(item),
         error: function (jqXHR, textStatus, errorThrown) {
-            alert('here');
+            alert(textStatus);
         },
         success: function (result) {
             getData();
@@ -45,17 +31,17 @@ function addItem() {
     });
 }
 
-function deleteItem(id) {
+function deleteItem() {
+    let id = $(this).data('id')
     $.ajax({
         url: uri + '/' + id,
         type: 'DELETE',
-        success: function (result) {
-            getData();
-        }
+        success: getData
     });
 }
 
-function editItem(id) {
+function editItem() {
+    let id = $(this).data('id')
     $.each(todos, function (key, item) {
         if (item.id === id) {
             $('#edit-name').val(item.name);
@@ -97,4 +83,58 @@ function addEventHandlers() {
 function onReady() {
     addEventHandlers();
     getData();
+}
+
+function closeInput() {
+    $('#spoiler').css({ 'display': 'none' });
+}
+
+function updateCount(data) {
+    const el = $('#counter');
+    const todoList = $("#todo-list");
+    let name = 'to-do';
+
+    if (data) {
+        if (data > 1) {
+            name = 'to-dos';
+        }
+        el.text(data + ' ' + name);
+    } else {
+        el.html('No ' + name);
+    }
+
+    if (data || 0 > 0) {
+        todoList.show();
+    } else {
+        todoList.hide();
+    }
+}
+
+function getDataSuccess(data, updateCount) {
+    $('#todos').empty();
+    updateCount(data.length);
+    $.each(data, function (key, item) {
+        let complete = $('<input disabled="true" type="checkbox">');
+        $('#todos').append(
+            $('<tr>').append($('<td>').append(complete))
+                .append($('<td>').text(item.name))
+                .append($('<td>').append($('<button>').text('Edit')
+                    .data('id', item.id)
+                    .on('click', editItem)))
+                .append($('<td>').append($('<button>').text('Delete')
+                    .data('id', item.id)
+                    .on('click', deleteItem)))
+        );
+        complete.prop('checked', !!item.isComplete);
+    });
+    todos = data;
+}
+
+// If we're running under Node, 
+if (typeof exports !== 'undefined') {
+    exports.getDataSuccess = getDataSuccess;
+    exports.updateCount = updateCount;
+    exports.closeInput = closeInput;
+    exports.onReady = onReady;
+    exports.todoes = () => todos;
 }

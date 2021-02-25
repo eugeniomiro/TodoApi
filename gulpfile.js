@@ -7,7 +7,7 @@ const rimraf = require("rimraf");
 const concat = require("gulp-concat");
 const cssmin = require("gulp-cssmin");
 const uglify = require("gulp-uglify");
-const { server } = require('karma').Server;
+const Server  = require('karma').Server;
 
 let version = `1.0.` + (process.env.BUILD_NUMBER || '0');
 let configuration = arg.config || process.env.BUILD_CONFIGURATION || 'Release';
@@ -97,7 +97,7 @@ task("min:css", function() {
 
 task("min", series("min:js", "min:css"));
 task('test:js', function(done) {
-    new server({
+    new Server({
         configFile: __dirname + "/karma.conf.js",
         singleRun: true,
     }, done).start();
@@ -113,7 +113,7 @@ task('run:dotnet', series("test", ()=>{
 task("publish", series("clean", "min", "publish:dotnet"));
 
 task('tdd', function(done) {
-    new server({
+    new Server({
         configFile: __dirname + "/karma.conf.js",
         autoWatch: true,
         singleRun: false
