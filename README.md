@@ -18,3 +18,5 @@ from [tutorial](https://docs.microsoft.com/en-us/aspnet/core/tutorials/first-web
 [Writing testable code in JavaScript](https://www.toptal.com/javascript/writing-testable-code-in-javascript)
 
 [Sinon Tutorial: JavaScript Testing with Mocks, Spies & Stubs](https://www.sitepoint.com/sinon-tutorial-javascript-testing-mocks-spies-stubs/)
+
+[Pass command line parameters to gulp tasks](https://www.sitepoint.com/pass-parameters-gulp-tasks/)
