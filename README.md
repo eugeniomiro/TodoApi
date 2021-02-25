@@ -9,6 +9,8 @@ from [tutorial](https://docs.microsoft.com/en-us/aspnet/core/tutorials/first-web
 
 [Mocha](https://mochajs.org/)
 
+[Istambul: Using alternative reporters](https://istanbul.js.org/docs/advanced/alternative-reporters/)
+
 [Visual Studio Code Tips and Tricks](https://code.visualstudio.com/docs/getstarted/tips-and-tricks)
 
 [Getting started with Karma and Mocha for automated browser tests](https://jazanne.com/2018/09/10/getting-started-with-karma-and-mocha-for-automated-browser-tests/)
