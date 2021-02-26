@@ -5,15 +5,43 @@ if (typeof require !== 'undefined') {
     global.alert = () => {};
     var sinon = require('sinon');
     var assert = require('chai').assert;
-    var { todoes, getData, getDataSuccess, 
-          closeInput, updateCount, addItem,
-          deleteItem, editItem, setTodos } = require("../js/site");
+    var { get_Todos, set_Todos , getDataSuccess, getData, 
+          addItem, deleteItem, editItem, updateCount, closeInput,
+          onSubmitForm, addEventHandlers, onReady } = require("../js/site");
 } else {
-    todoes = () => todos;
-    setTodos = newTodos => { todos = newTodos }
+    get_Todos = () => todos;
+    set_Todos = newTodos => { todos = newTodos }
 }
 const sandbox = sinon.createSandbox();
 const todoApi = 'api/todo';
+
+describe('getDataSuccess()', function() {
+    const tests = [
+        { data: [], expectedTodosLength: 0 },
+        { data: [{ id: 1, name: 'me', isComplete: false}], expectedTodosLength: 1 },
+        { data: [{ id: 1, name: 'me', isComplete: false},
+                 { id: 2, name: 'you', isComplete: true}], expectedTodosLength: 2 }
+    ];
+    tests.forEach(test => {
+        describe(`with data = ${JSON.stringify(test.data)}`, function() {
+            before(function() {
+                $(document.body).append("<tbody id='todos'>");
+                getDataSuccess(test.data, updateCount);
+            });
+            it('should update todos variable', function() {
+                assert.isNotNull(get_Todos());
+            });
+            it(`should have todos length equal ${test.expectedTodosLength}`, function() {
+                assert.equal(get_Todos().length, test.expectedTodosLength);
+            });
+            it(`should add ${test.expectedTodosLength} tr(s) to #todos`, () => {
+                assert.equal($("#todos").find("tr").length, test.expectedTodosLength);
+            });
+            after(function() {
+            });
+        });
+    });
+});
 
 describe('getData()', function() {
     before(function() {        
@@ -79,12 +107,16 @@ describe('deleteItem()', function() {
 
 describe('editItem()', function() {
     let element;
+    let spoiler;
+    let editName;
+    let editId;
+    let editIsComplete;
     before(function() {
-        setTodos([{ id: 1, name:'name', isComplete: true }]);
-        let spoiler = $("<div id='spoiler' style='display:hidden'>");
-        let editName = $("<input type='text' id='edit-name'>");
-        let editId = $("<input type='text' id='edit-id'>");
-        let editIsComplete = $("<input type='checkbox' id='edit-isComplete'>");
+        set_Todos([{ id: 1, name:'name', isComplete: true }]);
+        spoiler = $("<div id='spoiler' style='display:hidden'>");
+        editName = $("<input type='text' id='edit-name'>");
+        editId = $("<input type='text' id='edit-id'>");
+        editIsComplete = $("<input type='checkbox' id='edit-isComplete'>");
         $(document.body).append(spoiler);
         $(document.body).append(editName);
         $(document.body).append(editId);
@@ -106,37 +138,14 @@ describe('editItem()', function() {
         assert.equal($('#edit-isComplete').prop('checked'), true);
     });
     after(function() {
+        set_Todos(null);
+        editIsComplete.remove();
+        editName.remove();
+        editId.remove();
+        spoiler.remove();
         sandbox.restore();
         element.off('click');
         element = null;
-    });
-});
-
-describe('getDataSuccess()', function() {
-    const tests = [
-        { data: [], expectedTodosLength: 0 },
-        { data: [{ id: 1, name: 'me', isComplete: false}], expectedTodosLength: 1 },
-        { data: [{ id: 1, name: 'me', isComplete: false},
-                 { id: 2, name: 'you', isComplete: true}], expectedTodosLength: 2 }
-    ];
-    tests.forEach(test => {
-        describe(`with data = ${JSON.stringify(test.data)}`, function() {
-            before(function() {
-                $(document.body).append("<tbody id='todos'>");
-                getDataSuccess(test.data, updateCount);
-            });
-            it('should update todos variable', function() {
-                assert.isNotNull(todoes());
-            });
-            it(`should have todos length equal ${test.expectedTodosLength}`, function() {
-                assert.equal(todoes().length, test.expectedTodosLength);
-            });
-            it(`should add ${test.expectedTodosLength} tr(s) to #todos`, () => {
-                assert.equal($("#todos").find("tr").length, test.expectedTodosLength);
-            });
-            after(function() {
-            });
-        });
     });
 });
 
@@ -197,3 +206,28 @@ describe('closeInput()', function() {
         spoiler = null;
     });
 });
+
+describe('onSubmitForm()', function() {
+    var result;
+    let editId;
+    before(function() {
+        editId = $("<input type='text' id='edit-id' value='1'>");
+        $(document.body).append(editId);
+        sandbox.stub(jQuery, "ajax");
+        result = onSubmitForm();
+    });
+    it('should execute ajax method once', function() {
+        assert.isTrue(jQuery.ajax.calledOnce);
+    });
+    it('should have been called with todoApi url id 1', function() {
+        assert.equal(jQuery.ajax.getCall(0).args[0].url, todoApi + '/1');
+    });
+    it('should have been called with method PUT', function() {
+        assert.equal(jQuery.ajax.getCall(0).args[0].type, 'PUT');
+    });
+    after(function() {
+        editId.remove();
+        sandbox.restore();
+    });
+});
+

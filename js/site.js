@@ -132,14 +132,16 @@ function getDataSuccess(data, updateCount) {
 
 // If we're running under Node, 
 if (typeof exports !== 'undefined') {
+    exports.getDataSuccess = getDataSuccess;
     exports.getData = getData;
     exports.addItem = addItem;
     exports.deleteItem = deleteItem;
     exports.editItem = editItem;
-    exports.getDataSuccess = getDataSuccess;
     exports.updateCount = updateCount;
     exports.closeInput = closeInput;
+    exports.onSubmitForm = onSubmitForm;
+    exports.addEventHandlers = addEventHandlers;
     exports.onReady = onReady;
-    exports.todoes = () => todos;
-    exports.setTodos = newTodos => { todos = newTodos }
+    exports.get_Todos = () => todos;
+    exports.set_Todos = newTodos => { todos = newTodos }
 }
