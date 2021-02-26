@@ -132,6 +132,7 @@ function getDataSuccess(data, updateCount) {
 
 // If we're running under Node, 
 if (typeof exports !== 'undefined') {
+    exports.getData = getData;
     exports.getDataSuccess = getDataSuccess;
     exports.updateCount = updateCount;
     exports.closeInput = closeInput;

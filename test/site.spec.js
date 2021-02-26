@@ -2,11 +2,34 @@
 
 // running on node?
 if (typeof require !== 'undefined') {
+    var sinon = require('sinon');
     var assert = require('chai').assert;
-    var { todoes, getDataSuccess, closeInput, updateCount } = require("../js/site");
+    var { todoes, getData, getDataSuccess, closeInput, updateCount } = require("../js/site");
 } else {
     todoes = () => todos;
 }
+const sandbox = sinon.createSandbox();
+const todoApi = 'api/todo'
+
+describe('getData()', function() {
+
+    before(function() {
+        sandbox.spy(jQuery, "ajax");
+        getData();
+    });
+    it('should execute ajax method once', function() {
+        assert(jQuery.ajax.calledOnce);
+    });
+    it('should have been called with todoApi url', function() {
+        assert.equal(jQuery.ajax.getCall(0).args[0].url, todoApi);
+    });
+    it('should have been called with method GET', function() {
+        assert.equal(jQuery.ajax.getCall(0).args[0].type, 'GET');
+    });
+    after(function() {
+        sandbox.restore();
+    });
+});
 
 describe('getDataSuccess()', function() {
     const tests = [
