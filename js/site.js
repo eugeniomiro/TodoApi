@@ -1,3 +1,4 @@
+'use strict';
 const uri = 'api/todo';
 let todos = null;
 
@@ -74,14 +75,10 @@ function onSubmitForm() {
     return false;
 }
 
-function addEventHandlers() {
+function onReady() {
     $('.edit-form').on('submit', onSubmitForm);
     $('.add-form').on('submit', addItem);
     $('.close-spoiler').on('click', closeInput);
-}
-
-function onReady() {
-    addEventHandlers();
     getData();
 }
 
@@ -140,7 +137,6 @@ if (typeof exports !== 'undefined') {
     exports.updateCount = updateCount;
     exports.closeInput = closeInput;
     exports.onSubmitForm = onSubmitForm;
-    exports.addEventHandlers = addEventHandlers;
     exports.onReady = onReady;
     exports.get_Todos = () => todos;
     exports.set_Todos = newTodos => { todos = newTodos }
