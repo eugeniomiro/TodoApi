@@ -138,6 +138,6 @@ if (typeof exports !== 'undefined') {
     exports.closeInput = closeInput;
     exports.onSubmitForm = onSubmitForm;
     exports.onReady = onReady;
-    exports.get_Todos = () => todos;
-    exports.set_Todos = newTodos => { todos = newTodos }
+    exports.get_Todos = function() { return todos; };
+    exports.set_Todos = function(newTodos) { todos = newTodos; };
 }
