@@ -1,9 +1,9 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace TodoApi.Unit.Test
+namespace TodoApi.Unit.Test.Controllers
 {
     [TestClass]
-    public class UnitTest1
+    public class TodoControllerTests
     {
         [TestMethod]
         public void TestMethod1()
