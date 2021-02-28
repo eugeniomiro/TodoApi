@@ -15,6 +15,9 @@
             "label": "gulp publish",
             "command": "gulp",
             "type": "process",
+            "options": {
+                "cwd": "./src/TodoApi"
+            },
             "args": [
                 "publish",
                 "--config",

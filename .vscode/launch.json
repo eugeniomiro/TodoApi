@@ -8,7 +8,7 @@
             "name": ".NET Core Launch (web 5.0 debug)",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "build",
+            "preLaunchTask": "gulp publish",
             // If you have changed target frameworks, make sure to update the program path.
             "program": "${workspaceFolder}/src/TodoApi/bin/Debug/net5.0/TodoApi.dll",
             "args": [],
