@@ -36,6 +36,7 @@
     "karma-mocha": "^2.0.1",
     "karma-mocha-reporter": "^2.2.5",
     "karma-sinon-chai": "^2.0.2",
+    "lodash.template": "^2.4.1",
     "mocha": "^8.1.1",
     "nyc": "^15.1.0",
     "rimraf": "^3.0.2",
