@@ -1,6 +1,21 @@
 # TodoApi
 from [tutorial](https://docs.microsoft.com/en-us/aspnet/core/tutorials/first-web-api)
 
+## Development environment setup
+
+* Install NodeJs (download from [here](https://nodejs.org/en/download/), descargar de [aqui](https://nodejs.org/es/download/))
+* Install TodoApi app packages
+```
+REM $(SolutionDir) is the folder where you have your project
+
+C:\> cd $(SolutionDir)\src\TodoApi
+
+C:\> npm install
+
+```
+
+## This project has a lot to thank to the following links (Thank you all! 🎁)
+
 [Introduction to javascript unit testing](https://www.smashingmagazine.com/2012/06/introduction-to-javascript-unit-testing/)
 
 [Improve *npm* usage with .NET Core](https://stackoverflow.com/a/37938373/41236)

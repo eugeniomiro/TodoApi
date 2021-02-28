@@ -35,41 +35,32 @@ task("restore:dotnet", function() {
                .pipe(restore());
 });
 
-task("build:dotnet", series("restore:dotnet", function() {
+task("run:build:dotnet", function() {
     return src(paths.csProjs, {read: false})
                .pipe(build({
                    configuration: configuration, 
                    version: version
                 }));
-}));
+})
 
-task("test:dotnet", series("build:dotnet", function() {
+task("build:dotnet", series("restore:dotnet", "run:build:dotnet"));
+
+task("run:test:dotnet", function() {
     return src(paths.csTestProjs, {read: false})
                .pipe(test());
-}));
+});
 
-task("publish:dotnet", series("test:dotnet", function() {
+task("test:dotnet", series("build:dotnet", "run:test:dotnet"));
+
+task("run:publish:dotnet", function() {
     return src(paths.csWebProject, {read: false})
                .pipe(publish({
                    configuration: configuration, 
                    version: version
                 }));
-}));
-////convert a project to a nuget package
-//gulp.task('pack', series('build:dotnet', () => {
-//    return src('**/TestLibrary.csproj', {read: false})
-//                .pipe(pack({
-//                            output: path.join(process.cwd(), 'nupkgs') , 
-//                            version: version
-//                            }));
-//}));
-////push nuget packages to a server
-//gulp.task('push', series('pack', () => {
-//    return src('nupkgs/*.nupkg', {read: false})
-//                .pipe(push({
-//                    apiKey: process.env.NUGET_API_KEY, 
-//                    source: 'https://myget.org/f/myfeedurl'}));
-//}));
+});
+
+task("publish:dotnet", series("test:dotnet", "run:publish:dotnet"));
 
 task("clean:js", function(cb) {
     rimraf(paths.concatJsDest, cb);

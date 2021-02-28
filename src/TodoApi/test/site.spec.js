@@ -2,15 +2,23 @@
 
 // running on node?
 if (typeof require !== 'undefined') {
-    global.alert = () => {};
+    global.alert = function() {};
     var sinon = require('sinon');
     var assert = require('chai').assert;
-    var { get_Todos, set_Todos , getDataSuccess, getData, 
-          addItem, deleteItem, editItem, updateCount, closeInput,
-          onSubmitForm, addEventHandlers, onReady } = require("../js/site");
+    var site = require("../js/site");
+    var get_Todos = site.get_Todos,
+        set_Todos = site.set_Todos,
+        getDataSuccess = site.getDataSuccess,
+        getData = site.getData, 
+        addItem = site.addItem,
+        deleteItem = site.deleteItem,
+        editItem = site.editItem,
+        updateCount = site.updateCount,
+        closeInput = site.closeInput,
+        onSubmitForm = site.onSubmitForm;
 } else {
-    get_Todos = () => todos;
-    set_Todos = newTodos => { todos = newTodos }
+    get_Todos = function() { return todos };
+    set_Todos = function(newTodos) { todos = newTodos }
 }
 const sandbox = sinon.createSandbox();
 const todoApi = 'api/todo';
@@ -22,8 +30,8 @@ describe('getDataSuccess()', function() {
         { data: [{ id: 1, name: 'me', isComplete: false},
                  { id: 2, name: 'you', isComplete: true}], expectedTodosLength: 2 }
     ];
-    tests.forEach(test => {
-        describe(`with data = ${JSON.stringify(test.data)}`, function() {
+    tests.forEach(function(test) {
+        describe('with data = ' + JSON.stringify(test.data), function() {
             before(function() {
                 $(document.body).append("<tbody id='todos'>");
                 getDataSuccess(test.data, updateCount);
@@ -31,10 +39,10 @@ describe('getDataSuccess()', function() {
             it('should update todos variable', function() {
                 assert.isNotNull(get_Todos());
             });
-            it(`should have todos length equal ${test.expectedTodosLength}`, function() {
+            it('should have todos length equal ' + test.expectedTodosLength, function() {
                 assert.equal(get_Todos().length, test.expectedTodosLength);
             });
-            it(`should add ${test.expectedTodosLength} tr(s) to #todos`, () => {
+            it('should add ' + test.expectedTodosLength + ' tr(s) to #todos', function() {
                 assert.equal($("#todos").find("tr").length, test.expectedTodosLength);
             });
             after(function() {
@@ -156,8 +164,8 @@ describe('updateCount()', function () {
         { arg: 1,    expected: { todo: '1 to-do',  display: 'table' } },
         { arg: 2,    expected: { todo: '2 to-dos', display: 'table' } },
     ];
-    tests.forEach(({ arg, expected }) => {
-        describe(`calling updateCount(${arg === null ? '' : arg})`, () => {
+    tests.forEach(function(data) {
+        describe('calling updateCount(' + data.arg === null ? '' : data.arg + ')', function() {
             let p;
             let table;
 
@@ -168,14 +176,14 @@ describe('updateCount()', function () {
                 $(document.body)
                     .append(p)
                     .append(table);
-                updateCount(arg);
+                updateCount(data.arg);
             });
 
-            it(`should display '${expected.todo}'`, function () {
-                assert.equal(p.text(), expected.todo);
+            it('should display "' + data.expected.todo + '"', function () {
+                assert.equal(p.text(), data.expected.todo);
             });
-            it(`should display todo list as ${expected.display}`, function () {
-                assert.equal(table.css('display'), expected.display);
+            it('should display todo list as ' + data.expected.display, function () {
+                assert.equal(table.css('display'), data.expected.display);
             });
 
             after(function () {
