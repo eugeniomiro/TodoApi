@@ -182,7 +182,6 @@ namespace TodoApi.Unit.Test.Controllers
                 }
 
                 private static DbContextOptions<TodoContext> _globalDbContextOptions;
-                private IActionResult _createResult;
             }
 
             [TestClass]
