@@ -1,8 +1,8 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using TodoApi.Models;
 
 namespace TodoApi.Controllers
@@ -80,12 +80,19 @@ namespace TodoApi.Controllers
             return ItemToDTO(todo);
         }
 
-        private bool TodoItemExists(long id) => _context.TodoItems.Any(e => e.Id == id);
+        private bool TodoItemExists(long id)
+        {
+            return _context.TodoItems.Any(e => e.Id == id);
+        }
 
-        private static TodoItemDTO ItemToDTO(TodoItem item) => new TodoItemDTO {
-            Id = item.Id,
-            Name = item.Name,
-            IsComplete = item.IsComplete
-        };
-   }
+        private static TodoItemDTO ItemToDTO(TodoItem item)
+        {
+            return new TodoItemDTO
+            {
+                Id = item.Id,
+                Name = item.Name,
+                IsComplete = item.IsComplete
+            };
+        }
+    }
 }
