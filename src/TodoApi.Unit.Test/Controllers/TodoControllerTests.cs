@@ -1,8 +1,8 @@
-using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace TodoApi.Unit.Test.Controllers
 {
@@ -28,15 +28,7 @@ namespace TodoApi.Unit.Test.Controllers
                 [TestMethod]
                 public void Calling_GetAll_Method__Throws_NullReferenceException()
                 {
-                    try
-                    {
-                        _sut.GetAll().Wait();
-                    }
-                    catch (AggregateException ae) when (ae.InnerException is NullReferenceException)
-                    {                        
-                        return;
-                    }
-                    Assert.Fail();
+                    Assert.ThrowsExceptionAsync<NullReferenceException>(() => _sut.GetAll());
                 }
             }
 
