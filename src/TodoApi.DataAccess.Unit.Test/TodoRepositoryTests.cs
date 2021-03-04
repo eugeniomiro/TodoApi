@@ -9,6 +9,7 @@ using SimpleSpec.Bdd;
 namespace TodoApi.DataAccess.Unit.Test
 {
     using Domain.Models;
+    using TodoApi.DataAccess.Concrete;
 
     public static class TodoRepositoryTests 
     {
@@ -152,7 +153,7 @@ namespace TodoApi.DataAccess.Unit.Test
                 var sut = await BuildSutWithOneRecord();
 
                 // Act 
-                var deletedRecord = await sut.DeleteAsync(1);
+                await sut.DeleteAsync(1);
 
                 // Assert
             }

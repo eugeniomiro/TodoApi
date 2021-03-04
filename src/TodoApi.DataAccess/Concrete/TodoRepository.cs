@@ -1,14 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
-namespace TodoApi.DataAccess
+namespace TodoApi.DataAccess.Concrete
 {
-    using System;
-    using System.Linq;
+    using Contract;
     using Domain.Models;
 
-    public class TodoRepository
+    public class TodoRepository : ITodoRepository
     {
         public TodoRepository(TodoContext todoContext)
         {
