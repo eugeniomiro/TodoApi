@@ -9,8 +9,7 @@ namespace TodoApi.Unit.Test.Controllers
 {
     using Bdd;
     using Domain.Models;
-    using Models;
-    using TodoApi;
+    using TodoApi.DataAccess;
     using TodoApi.Controllers;
 
     public static class TodoControllerTests 

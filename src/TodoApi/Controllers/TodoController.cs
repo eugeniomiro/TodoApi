@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 namespace TodoApi.Controllers
 {
     using Domain.Models;
-    using Models;
+    using DataAccess;
 
     [Route("api/[controller]")]
     [ApiController]
