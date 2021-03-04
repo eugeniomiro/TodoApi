@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace TodoApi.Models
 {
+    using Domain.Models;
+
     public class TodoContext : DbContext
     {
         public TodoContext(DbContextOptions<TodoContext> options)

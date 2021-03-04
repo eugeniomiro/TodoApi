@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 
 namespace TodoApi.Unit.Test.Controllers
 {
     using Bdd;
+    using Domain.Models;
     using Models;
     using TodoApi;
     using TodoApi.Controllers;
