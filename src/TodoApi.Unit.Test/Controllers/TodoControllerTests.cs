@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.AspNetCore.Mvc;
 
 namespace TodoApi.Unit.Test.Controllers
 {
-    using SimpleSpec.Bdd;
+    using DataAccess;
     using Domain.Models;
-    using TodoApi.DataAccess;
+    using SimpleSpec.Bdd;
     using TodoApi.Controllers;
+    using WebUI;
 
     public static class TodoControllerTests 
     {

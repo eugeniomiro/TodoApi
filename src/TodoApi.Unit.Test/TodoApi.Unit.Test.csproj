@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TodoApi\TodoApi.csproj" />
+    <ProjectReference Include="..\TodoApi\TodoApi.WebUI.csproj" />
     <ProjectReference Include="..\SimpleSpec.Bdd\SimpleSpec.Bdd.csproj" />
   </ItemGroup>
 
