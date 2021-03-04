@@ -10,7 +10,7 @@ namespace TodoApi.Unit.Test.Controllers
     using DataAccess;
     using Domain.Models;
     using SimpleSpec.Bdd;
-    using TodoApi.Controllers;
+    using WebUI.Controllers;
     using WebUI;
 
     public static class TodoControllerTests 
