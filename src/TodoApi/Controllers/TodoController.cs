@@ -1,12 +1,14 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using TodoApi.Models;
 
-namespace TodoApi.Controllers
+namespace TodoApi.WebUI.Controllers
 {
+    using Domain.Models;
+    using DataAccess;
+
     [Route("api/[controller]")]
     [ApiController]
     public class TodoController : ControllerBase

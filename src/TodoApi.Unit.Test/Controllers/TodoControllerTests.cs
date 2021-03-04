@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Microsoft.AspNetCore.Mvc;
 
 namespace TodoApi.Unit.Test.Controllers
 {
-    using Bdd;
-    using Models;
-    using TodoApi;
-    using TodoApi.Controllers;
+    using DataAccess;
+    using Domain.Models;
+    using SimpleSpec.Bdd;
+    using WebUI.Controllers;
+    using WebUI;
 
     public static class TodoControllerTests 
     {
@@ -182,7 +183,6 @@ namespace TodoApi.Unit.Test.Controllers
                 }
 
                 private static DbContextOptions<TodoContext> _globalDbContextOptions;
-                private IActionResult _createResult;
             }
 
             [TestClass]

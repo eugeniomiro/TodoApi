@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
-namespace TodoApi
+namespace TodoApi.WebUI
 {
     public class Program
     {

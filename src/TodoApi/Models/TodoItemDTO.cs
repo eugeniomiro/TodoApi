@@ -1,4 +1,4 @@
-namespace TodoApi
+﻿namespace TodoApi.WebUI
 {
     public class TodoItemDTO
     {

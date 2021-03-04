@@ -1,7 +1,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 // see: https://saintgimp.org/2009/01/20/bdd-with-mstest/
-namespace TodoApi.Unit.Test.Bdd
+namespace SimpleSpec.Bdd
 {
     public class ContextSpecification
     {
