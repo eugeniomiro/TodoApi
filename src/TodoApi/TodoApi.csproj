@@ -16,6 +16,7 @@
   <ItemGroup>
     <ProjectReference Include="..\TodoApi.Domain\TodoApi.Domain.csproj" />
     <ProjectReference Include="..\TodoApi.DataAccess\TodoApi.DataAccess.csproj" />
+    <ProjectReference Include="..\TodoApi.Service\TodoApi.Service.csproj" />
   </ItemGroup>
 
 </Project>
