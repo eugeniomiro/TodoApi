@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace TodoApi.Unit.Test.Controllers
 {
-    using Bdd;
+    using SimpleSpec.Bdd;
     using Domain.Models;
     using TodoApi.DataAccess;
     using TodoApi.Controllers;

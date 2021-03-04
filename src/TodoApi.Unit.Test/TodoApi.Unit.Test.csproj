@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TodoApi\TodoApi.csproj" />
+    <ProjectReference Include="..\SimpleSpec.Bdd\SimpleSpec.Bdd.csproj" />
   </ItemGroup>
 
 </Project>
