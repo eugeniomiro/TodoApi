@@ -1,21 +1,86 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace TodoApi.DataAccess
 {
+    using System;
+    using System.Linq;
     using Domain.Models;
 
     public class TodoRepository
     {
-        public TodoRepository(List<TodoItem> items)
+        public TodoRepository(TodoContext todoContext)
         {
-            _items = items;
-        }
-        public async Task<IEnumerable<TodoItem>> GetAllAsync()
-        {
-            return await Task.Run(() => _items);
+            _todoContext = todoContext ?? throw new ArgumentNullException(nameof(todoContext));
         }
 
-        private readonly List<TodoItem> _items;
+        public async Task<IEnumerable<TodoItem>> GetAllAsync()
+        {
+            return await _todoContext.TodoItems.ToListAsync();
+        }
+
+        public async Task<TodoItem> GetTodoAsync(long id)
+        {
+            return await _todoContext.TodoItems.FindAsync(id);
+        }
+
+        public async Task<TodoItem> CreateAsync(TodoItem todoItem)
+        {
+            if (todoItem is null)
+            {
+                throw new ArgumentNullException(nameof(todoItem));
+            }
+
+            await _todoContext.TodoItems.AddAsync(todoItem);
+            await _todoContext.SaveChangesAsync();
+
+            return todoItem;
+        }
+
+        private readonly TodoContext _todoContext;
+
+        public async Task<TodoItem> UpdateAsync(int id, TodoItem todoItem)
+        {
+            if (todoItem is null)
+            {
+                throw new ArgumentNullException(nameof(todoItem));
+            }
+            if (todoItem.Id != id)
+            {
+                throw new ArgumentException("id");
+            }
+            _todoContext.Entry(todoItem).State = EntityState.Modified;
+            try
+            {
+                await _todoContext.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!TodoItemExists(id))
+                {
+                    throw new KeyNotFoundException("id");
+                }
+                throw;
+            }
+            return todoItem;
+        }
+
+        private bool TodoItemExists(long id)
+        {
+            return _todoContext.TodoItems.Any(e => e.Id == id);
+        }
+
+        public async Task<TodoItem> DeleteAsync(long id)
+        {
+            var todo = await _todoContext.TodoItems.FindAsync(id);
+            if (todo == null)
+            {
+                throw new KeyNotFoundException("id");
+            }
+            _todoContext.TodoItems.Remove(todo);
+            await _todoContext.SaveChangesAsync();
+            return todo;
+        }
     }
 }
