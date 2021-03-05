@@ -1,9 +1,13 @@
+# ignored folders
 .vs/
 obj/
 bin/
 node_modules/
 .nyc_output/
 coverage/
+TestResults/
+
+#ignored files
 public/css/site.min.css
 public/js/site.min.js
 *.suo

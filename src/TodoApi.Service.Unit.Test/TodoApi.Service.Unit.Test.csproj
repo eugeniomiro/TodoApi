@@ -15,9 +15,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\SimpleSpec.Bdd\SimpleSpec.Bdd.csproj" />
-    <ProjectReference Include="..\src\TodoApi.DataAccess\TodoApi.DataAccess.csproj" />
-    <ProjectReference Include="..\src\TodoApi.Service\TodoApi.Service.csproj" />
+    <ProjectReference Include="..\SimpleSpec.Bdd\SimpleSpec.Bdd.csproj" />
+    <ProjectReference Include="..\TodoApi.DataAccess\TodoApi.DataAccess.csproj" />
+    <ProjectReference Include="..\TodoApi.Service\TodoApi.Service.csproj" />
   </ItemGroup>
 
 </Project>
