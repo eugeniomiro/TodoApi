@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.31025.194
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{EB52F4F6-7E20-44DC-A002-981A1C6AA5DE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoApi.WebUI", "src\TodoApi\TodoApi.WebUI.csproj", "{0B2CE8EE-756A-41CB-8694-82AA5DA9BE74}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoApi.WebUI", "src\TodoApi.WebUI\TodoApi.WebUI.csproj", "{0B2CE8EE-756A-41CB-8694-82AA5DA9BE74}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoApi.Unit.Test", "src\TodoApi.Unit.Test\TodoApi.Unit.Test.csproj", "{DE197D32-633D-4E6D-AEAC-16F1BFA468DC}"
 EndProject
