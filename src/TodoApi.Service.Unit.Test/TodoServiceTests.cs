@@ -31,10 +31,9 @@ namespace TodoApi.Service.Unit.Test
                 protected override void Context()
                 {
                     // Arrange
-                    repositoryMock = new Mock<ITodoRepository>();
-                    repositoryMock.Setup(r => r.GetAllAsync())
-                                  .ReturnsAsync(new List<TodoItem> { new TodoItem { } });
-                    var sut = new TodoService(repositoryMock.Object);
+                    _repositoryMock = new Mock<ITodoRepository>().SetupGetAllAsyncToReturn(new List<TodoItem> { new TodoItem { } });
+                    
+                    var sut = new TodoService(_repositoryMock.Object);
 
                     // Act
                     list = sut.GetAllAsync().Result;
@@ -44,7 +43,7 @@ namespace TodoApi.Service.Unit.Test
                 public void It_Calls_GetAll_Repository_Method()
                 {
                     // Assert
-                    repositoryMock.Verify(r => r.GetAllAsync(), Times.Once);
+                    _repositoryMock.Verify(r => r.GetAllAsync(), Times.Once);
                 }
 
                 [TestMethod]
@@ -55,8 +54,71 @@ namespace TodoApi.Service.Unit.Test
                 }
 
                 private IEnumerable<TodoItem> list;
-                private Mock<ITodoRepository> repositoryMock;
             }
+
+            [TestClass]
+            public class When_Calling_GetTodo_Method_From_Sut_With_Matching_Ids : TodoServiceContext
+            {
+                protected override void Context()
+                {
+                    // Arrange
+                    _repositoryMock = new Mock<ITodoRepository>().SetupGetTodoAsyncToReturnItem(1, new TodoItem { Id = 1, Name = "name", IsComplete = false });
+                    _sut = new TodoService(_repositoryMock.Object);
+
+                    // Act
+                    _returnedTodo = _sut.GetTodoAsync(1L).Result;
+                }
+
+                [TestMethod]
+                public void It_Returns_An_Expected_Item_TodoItem()
+                {
+                    // Assert
+                    Assert.IsNotNull(_returnedTodo);
+                    Assert.AreEqual(1, _returnedTodo.Id);
+                    Assert.AreEqual("name", _returnedTodo.Name);
+                    Assert.AreEqual(false, _returnedTodo.IsComplete);
+                }
+
+                [TestMethod]
+                public void It_Calls_GetTodoAsync_Repository_Method()
+                {
+                    // Assert
+                    _repositoryMock.Verify(r => r.GetTodoAsync(1), Times.Once);
+                }
+
+                private TodoItem _returnedTodo;
+                private TodoService _sut;
+            }
+
+            [TestClass]
+            public class When_Calling_Create_Method_From_Sut : TodoServiceContext
+            {
+                protected override void Context()
+                {
+                    // Arrange
+                    _repositoryMock = new Mock<ITodoRepository>().SetupCreateAsyncToReturnItem();
+                    _sut = new TodoService(_repositoryMock.Object);
+                    _returnedTodo = _sut.CreateAsync(new TodoItem { Id = 1, Name = "name", IsComplete = false }).Result;
+                }
+
+                [TestMethod]
+                public void It_Returns_An_Expected_Item_TodoItem()
+                {
+                    // Assert
+                    Assert.IsNotNull(_returnedTodo);
+                }
+
+                [TestMethod]
+                public void It_Calls_CreateAsync_Method_From_Repository()
+                {
+                    _repositoryMock.Verify(r => r.CreateAsync(It.IsAny<TodoItem>()), Times.Once);
+                }
+
+                private TodoItem _returnedTodo;
+                private TodoService _sut;
+            }
+
+            private Mock<ITodoRepository> _repositoryMock;
         }
     }
 }

@@ -19,5 +19,15 @@ namespace TodoApi.Service.Concrete
         {
             return await _todoRepository.GetAllAsync();
         }
+
+        public async Task<TodoItem> GetTodoAsync(long id)
+        {
+            return await _todoRepository.GetTodoAsync(id);
+        }
+
+        public async Task<TodoItem> CreateAsync(TodoItem todoItem)
+        {
+            return await _todoRepository.CreateAsync(todoItem);
+        }
     }
 }
