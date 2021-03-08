@@ -5,8 +5,9 @@ namespace TodoApi.Service.Concrete
 {
     using DataAccess.Contract;
     using Domain.Models;
+    using Service.Contract;
 
-    public class TodoService
+    public class TodoService : ITodoService
     {
         public TodoService(ITodoRepository todoRepository)
         {
