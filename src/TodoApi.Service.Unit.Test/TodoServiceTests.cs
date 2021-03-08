@@ -118,6 +118,50 @@ namespace TodoApi.Service.Unit.Test
                 private TodoService _sut;
             }
 
+            [TestClass]
+            public class When_Calling_Update_Method_From_Sut : TodoServiceContext
+            {
+                protected override void Context()
+                {
+                    // Arrange
+                    _repositoryMock = new Mock<ITodoRepository>();
+                    _sut = new TodoService(_repositoryMock.Object);
+
+                    // Act
+                    var _ = _sut.UpdateAsync(1L, new TodoItem()).Result;
+                }
+
+                [TestMethod]
+                public void It_Calls_UpdateAsync_Method_From_Repository()
+                {
+                    _repositoryMock.Verify(r => r.UpdateAsync(1L, It.IsAny<TodoItem>()), Times.Once);
+                }
+
+                private TodoService _sut;
+            }
+
+            [TestClass]
+            public class When_Calling_Delete_Method_From_Sut : TodoServiceContext
+            {
+                protected override void Context()
+                {
+                    // Arrange
+                    _repositoryMock = new Mock<ITodoRepository>();
+                    _sut = new TodoService(_repositoryMock.Object);
+
+                    // Act
+                    var _ = _sut.DeleteAsync(1L).Result;
+                }
+
+                [TestMethod]
+                public void It_Calls_DeleteAsync_Method_From_Repository()
+                {
+                    _repositoryMock.Verify(r => r.DeleteAsync(1L), Times.Once);
+                }
+
+                private TodoService _sut;
+            }
+
             private Mock<ITodoRepository> _repositoryMock;
         }
     }

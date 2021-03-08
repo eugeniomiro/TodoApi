@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using TodoApi.DataAccess.Contract;
-using TodoApi.Domain.Models;
 
 namespace TodoApi.Service.Concrete
 {
+    using DataAccess.Contract;
+    using Domain.Models;
+
     public class TodoService
     {
         public TodoService(ITodoRepository todoRepository)
@@ -28,6 +28,16 @@ namespace TodoApi.Service.Concrete
         public async Task<TodoItem> CreateAsync(TodoItem todoItem)
         {
             return await _todoRepository.CreateAsync(todoItem);
+        }
+
+        public async Task<TodoItem> UpdateAsync(long id, TodoItem todoItem)
+        {
+            return await _todoRepository.UpdateAsync(id, todoItem);
+        }
+
+        public async Task<TodoItem> DeleteAsync(long id)
+        {
+            return await _todoRepository.DeleteAsync(id);
         }
     }
 }

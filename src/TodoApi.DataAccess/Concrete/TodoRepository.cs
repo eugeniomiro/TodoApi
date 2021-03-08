@@ -41,7 +41,7 @@ namespace TodoApi.DataAccess.Concrete
 
         private readonly TodoContext _todoContext;
 
-        public async Task<TodoItem> UpdateAsync(int id, TodoItem todoItem)
+        public async Task<TodoItem> UpdateAsync(long id, TodoItem todoItem)
         {
             if (todoItem is null)
             {

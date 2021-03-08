@@ -11,6 +11,6 @@ namespace TodoApi.DataAccess.Contract
         Task<TodoItem> DeleteAsync(long id);
         Task<IEnumerable<TodoItem>> GetAllAsync();
         Task<TodoItem> GetTodoAsync(long id);
-        Task<TodoItem> UpdateAsync(int id, TodoItem todoItem);
+        Task<TodoItem> UpdateAsync(long id, TodoItem todoItem);
     }
 }
