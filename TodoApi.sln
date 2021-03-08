@@ -3,16 +3,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31025.194
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{EB52F4F6-7E20-44DC-A002-981A1C6AA5DE}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoApi.WebUI", "src\TodoApi\TodoApi.WebUI.csproj", "{0B2CE8EE-756A-41CB-8694-82AA5DA9BE74}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoApi.Unit.Test", "src\TodoApi.Unit.Test\TodoApi.Unit.Test.csproj", "{DE197D32-633D-4E6D-AEAC-16F1BFA468DC}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{29B3555B-88F0-4802-AB4B-29E7C1BFBC4D}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{EB52F4F6-7E20-44DC-A002-981A1C6AA5DE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoApi.WebUI", "src\TodoApi.WebUI\TodoApi.WebUI.csproj", "{0B2CE8EE-756A-41CB-8694-82AA5DA9BE74}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoApi.Unit.Test", "src\TodoApi.WebUI.Unit.Test\TodoApi.WebUI.Unit.Test.csproj", "{DE197D32-633D-4E6D-AEAC-16F1BFA468DC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoApi.Domain", "src\TodoApi.Domain\TodoApi.Domain.csproj", "{455FEE58-BF7E-423E-A5D0-A3E8C59D8DAE}"
 EndProject
@@ -23,6 +23,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleSpec.Bdd", "src\SimpleSpec.Bdd\SimpleSpec.Bdd.csproj", "{10244D20-E95D-4744-9DF6-39A8962C84FA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoApi.DataAccess.Unit.Test", "src\TodoApi.DataAccess.Unit.Test\TodoApi.DataAccess.Unit.Test.csproj", "{D492CD92-0A1D-4705-B7C7-33E358E7103A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoApi.Service.Unit.Test", "src\TodoApi.Service.Unit.Test\TodoApi.Service.Unit.Test.csproj", "{3DEBDC85-E60F-4927-9782-D8A5D1D5E9CC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -118,6 +120,18 @@ Global
 		{D492CD92-0A1D-4705-B7C7-33E358E7103A}.Release|x64.Build.0 = Release|Any CPU
 		{D492CD92-0A1D-4705-B7C7-33E358E7103A}.Release|x86.ActiveCfg = Release|Any CPU
 		{D492CD92-0A1D-4705-B7C7-33E358E7103A}.Release|x86.Build.0 = Release|Any CPU
+		{3DEBDC85-E60F-4927-9782-D8A5D1D5E9CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3DEBDC85-E60F-4927-9782-D8A5D1D5E9CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3DEBDC85-E60F-4927-9782-D8A5D1D5E9CC}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{3DEBDC85-E60F-4927-9782-D8A5D1D5E9CC}.Debug|x64.Build.0 = Debug|Any CPU
+		{3DEBDC85-E60F-4927-9782-D8A5D1D5E9CC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3DEBDC85-E60F-4927-9782-D8A5D1D5E9CC}.Debug|x86.Build.0 = Debug|Any CPU
+		{3DEBDC85-E60F-4927-9782-D8A5D1D5E9CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3DEBDC85-E60F-4927-9782-D8A5D1D5E9CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3DEBDC85-E60F-4927-9782-D8A5D1D5E9CC}.Release|x64.ActiveCfg = Release|Any CPU
+		{3DEBDC85-E60F-4927-9782-D8A5D1D5E9CC}.Release|x64.Build.0 = Release|Any CPU
+		{3DEBDC85-E60F-4927-9782-D8A5D1D5E9CC}.Release|x86.ActiveCfg = Release|Any CPU
+		{3DEBDC85-E60F-4927-9782-D8A5D1D5E9CC}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -130,6 +144,7 @@ Global
 		{548494DB-5945-4091-B294-76EB5578E69B} = {EB52F4F6-7E20-44DC-A002-981A1C6AA5DE}
 		{10244D20-E95D-4744-9DF6-39A8962C84FA} = {EB52F4F6-7E20-44DC-A002-981A1C6AA5DE}
 		{D492CD92-0A1D-4705-B7C7-33E358E7103A} = {EB52F4F6-7E20-44DC-A002-981A1C6AA5DE}
+		{3DEBDC85-E60F-4927-9782-D8A5D1D5E9CC} = {EB52F4F6-7E20-44DC-A002-981A1C6AA5DE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AAF531B0-B94A-4FC0-AAA5-85ACAC0460A7}
