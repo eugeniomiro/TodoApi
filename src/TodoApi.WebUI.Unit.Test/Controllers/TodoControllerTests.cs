@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -26,7 +26,7 @@ namespace TodoApi.Unit.Test.Controllers
                 [TestMethod]
                 public void It_Throws_ArgumentNullException()
                 {
-                    Assert.ThrowsException<ArgumentNullException>(() => new TodoController(default(TodoContext), default(ITodoService)));
+                    Assert.ThrowsException<ArgumentNullException>(() => new TodoController(default, default(ITodoService)));
                 }
             }
 
@@ -36,7 +36,7 @@ namespace TodoApi.Unit.Test.Controllers
                 protected override void Context()
                 {
                     _todoServiceMock = new Mock<ITodoService>();
-                    _sut = new TodoController(default(TodoContext), _todoServiceMock.Object);
+                    _sut = new TodoController(default, _todoServiceMock.Object);
                     _sut.GetAll().Wait();
                 }
 
@@ -57,7 +57,7 @@ namespace TodoApi.Unit.Test.Controllers
                     _todoServiceMock = new Mock<ITodoService>();
                     _todoServiceMock.Setup(s => s.GetTodoAsync(1))
                                     .ReturnsAsync(new TodoItem());
-                    _sut = new TodoController(default(TodoContext), _todoServiceMock.Object);
+                    _sut = new TodoController(default, _todoServiceMock.Object);
                     _todoItemResult = _sut.GetTodo(1).Result;
                 }
 
@@ -90,7 +90,7 @@ namespace TodoApi.Unit.Test.Controllers
                 {
                     // Arrange
                     _todoServiceMock = new Mock<ITodoService>();
-                    _sut = new TodoController(default(TodoContext), _todoServiceMock.Object);
+                    _sut = new TodoController(default, _todoServiceMock.Object);
 
                     // Act
                     _todoItemResult = _sut.GetTodo(1).Result;
@@ -114,78 +114,51 @@ namespace TodoApi.Unit.Test.Controllers
             [TestClass]
             public class When_Calling_Create_Method_With_No_Item : TodoControllerContext
             {
-                [ClassInitialize]
-                public static void ClassInitialize(TestContext _)
-                {
-                    _globalDbContextOptions = new DbContextOptionsBuilder<TodoContext>()
-                                                    .UseInMemoryDatabase(databaseName: "TodoContext Create tests")
-                                                    .Options;
-                    using (var dbcontext = new TodoContext(_globalDbContextOptions))
-                    {
-                        dbcontext.Database.EnsureDeleted();
-                        dbcontext.Database.EnsureCreated();
-                    }
-                }
-
                 protected override void Context()
                 {
-                    _sut = new TodoController(new TodoContext(_globalDbContextOptions), new Mock<ITodoService>().Object);
+                    _sut = new TodoController(default, new Mock<ITodoService>().Object);
                 }
 
                 [TestMethod]
-                public async Task It_Throws_A_NullReferenceException()
+                public async Task It_Throws_A_ArgumentNullException()
                 {
-                    await Assert.ThrowsExceptionAsync<NullReferenceException>(() => _sut.Create(default(TodoItem)));
+                    await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => _sut.Create(default(TodoItem)));
                 }
-
-                private static DbContextOptions<TodoContext> _globalDbContextOptions;
             }
 
             [TestClass]
             public class When_Calling_Create_Method_With_A_Valid_Item : TodoControllerContext
             {
-                [ClassInitialize]
-                public static void ClassInitialize(TestContext _)
-                {
-                    _globalDbContextOptions = new DbContextOptionsBuilder<TodoContext>()
-                                                    .UseInMemoryDatabase(databaseName: "TodoContext Create tests")
-                                                    .Options;
-                    using (var dbcontext = new TodoContext(_globalDbContextOptions))
-                    {
-                        dbcontext.Database.EnsureDeleted();
-                        dbcontext.Database.EnsureCreated();
-                    }
-                }
-
                 protected override void Context()
                 {
-                    _sut = new TodoController(new TodoContext(_globalDbContextOptions), new Mock<ITodoService>().Object);
-                    _createResult = _sut.Create(new TodoItem { Name = "othertodo", IsComplete = false }).Result;
+                    // Arrange
+                    _todoServiceMock = new Mock<ITodoService>();
+                    _todoServiceMock.Setup(s => s.CreateAsync(It.IsAny<TodoItem>()))
+                                    .ReturnsAsync(new TodoItem { Id = 1 });
+                    _sut = new TodoController(default, _todoServiceMock.Object);
+
+                    // Act
+                    _createResult = _sut.Create(new TodoItem()).Result;
                 }
 
                 [TestMethod]
                 public void It_Returns_Create_And_Creates_TodoItem_In_Database()
                 {
+                    // Assert
                     Assert.IsInstanceOfType(_createResult, typeof(CreatedAtRouteResult));
+
                     var createdAtRouteResult = _createResult as CreatedAtRouteResult;
                     Assert.AreEqual("GetTodo", createdAtRouteResult.RouteName);
                     Assert.AreEqual(1, createdAtRouteResult.RouteValues.Count);
+
                     var createdAtRouteValuesEnumerator = createdAtRouteResult.RouteValues.GetEnumerator();
                     createdAtRouteValuesEnumerator.MoveNext();
                     Assert.AreEqual("id", createdAtRouteValuesEnumerator.Current.Key);
                     Assert.AreEqual(1L, createdAtRouteValuesEnumerator.Current.Value);
-                    using (var dbcontext = new TodoContext(_globalDbContextOptions))
-                    {
-                        Assert.AreEqual(1, dbcontext.TodoItems.Count());
-                        var todoItem = dbcontext.TodoItems.First();
-                        Assert.AreEqual(1, todoItem.Id);
-                        Assert.AreEqual("othertodo", todoItem.Name);
-                        Assert.AreEqual(false, todoItem.IsComplete);
-                    }
                 }
 
-                private static DbContextOptions<TodoContext> _globalDbContextOptions;
                 private IActionResult _createResult;
+                private Mock<ITodoService> _todoServiceMock;
             }
 
             [TestClass]

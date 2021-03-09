@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -6,8 +7,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace TodoApi.WebUI.Controllers
 {
-    using Domain.Models;
     using DataAccess;
+    using Domain.Models;
     using Service.Contract;
 
     [Route("api/[controller]")]
@@ -20,7 +21,7 @@ namespace TodoApi.WebUI.Controllers
         public TodoController(TodoContext context, ITodoService todoService = default(ITodoService))
         {
             _context = context;
-            _todoService = todoService ?? throw new System.ArgumentNullException(nameof(todoService));
+            _todoService = todoService ?? throw new ArgumentNullException(nameof(todoService));
         }
                 
         [HttpGet]
@@ -43,8 +44,12 @@ namespace TodoApi.WebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(TodoItem item)
         {
-            _context.TodoItems.Add(item);
-            await _context.SaveChangesAsync();
+            if (item is null)
+            {
+                throw new ArgumentNullException(nameof(item));
+            }
+
+            item = await _todoService.CreateAsync(item);
 
             return CreatedAtRoute(nameof(GetTodo), new { id = item.Id }, item);
         }
