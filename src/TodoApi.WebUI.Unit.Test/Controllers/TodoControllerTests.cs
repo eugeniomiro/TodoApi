@@ -133,9 +133,9 @@ namespace TodoApi.Unit.Test.Controllers
                 }
 
                 [TestMethod]
-                public void It_Throws_A_NullReferenceException()
+                public async Task It_Throws_A_NullReferenceException()
                 {
-                    Assert.ThrowsExceptionAsync<NullReferenceException>(() => _sut.Create(default(TodoItem)));
+                    await Assert.ThrowsExceptionAsync<NullReferenceException>(() => _sut.Create(default(TodoItem)));
                 }
 
                 private static DbContextOptions<TodoContext> _globalDbContextOptions;
@@ -210,9 +210,9 @@ namespace TodoApi.Unit.Test.Controllers
                 }
 
                 [TestMethod]
-                public void It_Throws_A_NullReferenceException()
+                public async Task It_Throws_A_NullReferenceException()
                 {
-                    Assert.ThrowsExceptionAsync<NullReferenceException>(() => _sut.Update(2, default(TodoItem)));
+                    await Assert.ThrowsExceptionAsync<NullReferenceException>(() => _sut.Update(2, default(TodoItem)));
                 }
 
                 private static DbContextOptions<TodoContext> _globalDbContextOptions;
