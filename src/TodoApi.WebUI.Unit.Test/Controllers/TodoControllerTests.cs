@@ -13,6 +13,7 @@ namespace TodoApi.Unit.Test.Controllers
     using WebUI.Controllers;
     using WebUI;
     using TodoApi.Service.Contract;
+    using Moq;
 
     public static class TodoControllerTests 
     {
@@ -36,47 +37,22 @@ namespace TodoApi.Unit.Test.Controllers
             }
 
             [TestClass]
-            public class When_Calling_GetAll_Method_Having_One_TodoItem_In_Database : TodoControllerContext
+            public class When_Calling_GetAll_Method : TodoControllerContext
             {
-                [ClassInitialize]
-                public static void ClassInitialize(TestContext _)
-                {
-                    _globalDbContextOptions = new DbContextOptionsBuilder<TodoContext>()
-                                                    .UseInMemoryDatabase(databaseName: "TodoContext GetAll tests")
-                                                    .Options;
-                    using (var dbcontext = new TodoContext(_globalDbContextOptions))
-                    {
-                        dbcontext.Database.EnsureDeleted();
-                        dbcontext.Database.EnsureCreated();
-
-                        dbcontext.TodoItems.Add(new TodoItem { Id = 1, Name= "my todo", IsComplete = false });
-                        dbcontext.SaveChanges();
-                    }
-                }
-
                 protected override void Context()
                 {
-                    _sut = new TodoController(new TodoContext(_globalDbContextOptions));
-                    _getAllResult = _sut.GetAll().Result.Value;
+                    _todoServiceMock = new Mock<ITodoService>();
+                    _sut = new TodoController(default(TodoContext), _todoServiceMock.Object);
+                    _sut.GetAll().Wait();
                 }
 
                 [TestMethod]
-                public void Count_Equals_One()
+                public void It_Calls_GetAllAsync_Method_Of_TodoService()
                 {
-                    Assert.AreEqual(1, _getAllResult.Count());
+                    _todoServiceMock.Verify(s => s.GetAllAsync(), Times.Once);
                 }
 
-                [TestMethod]
-                public void First_Record_Returned_Has_Saved_Data()
-                {
-                    var record = _getAllResult.First();
-                    Assert.AreEqual(1, record.Id);
-                    Assert.AreEqual("my todo", record.Name);
-                    Assert.AreEqual(false, record.IsComplete);
-                }
-
-                private static DbContextOptions<TodoContext> _globalDbContextOptions;
-                private IEnumerable<TodoItemDTO> _getAllResult;
+                private Mock<ITodoService> _todoServiceMock;
             }
 
             [TestClass]

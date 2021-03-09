@@ -26,8 +26,7 @@ namespace TodoApi.WebUI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TodoItemDTO>>> GetAll()
         {
-            return await _context.TodoItems.Select(x => ItemToDTO(x))
-                                           .ToListAsync();
+            return Ok((await _todoService.GetAllAsync()).Select(x => ItemToDTO(x)));
         }
 
         [HttpGet("{id}", Name = nameof(GetTodo))]
