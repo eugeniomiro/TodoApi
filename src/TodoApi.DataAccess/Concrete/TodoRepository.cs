@@ -8,6 +8,7 @@ namespace TodoApi.DataAccess.Concrete
 {
     using Contract;
     using Domain.Models;
+    using Domain.SumTypes;
 
     public class TodoRepository : ITodoRepository
     {
@@ -41,7 +42,7 @@ namespace TodoApi.DataAccess.Concrete
 
         private readonly TodoContext _todoContext;
 
-        public async Task<TodoItem> UpdateAsync(long id, TodoItem todoItem)
+        public async Task<Updated<TodoItem>> UpdateAsync(long id, TodoItem todoItem)
         {
             if (todoItem is null)
             {
@@ -49,7 +50,7 @@ namespace TodoApi.DataAccess.Concrete
             }
             if (todoItem.Id != id)
             {
-                throw new ArgumentException("id");
+                return Updated.Invalid;
             }
             _todoContext.Entry(todoItem).State = EntityState.Modified;
             try
@@ -60,11 +61,11 @@ namespace TodoApi.DataAccess.Concrete
             {
                 if (!TodoItemExists(id))
                 {
-                    throw new KeyNotFoundException("id");
+                    return Updated.NotFound;
                 }
                 throw;
             }
-            return todoItem;
+            return Updated.Accepted(todoItem);
         }
 
         private bool TodoItemExists(long id)
