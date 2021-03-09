@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace TodoApi.WebUI.Controllers
 {
-    using DataAccess;
     using Domain.Models;
     using Service.Contract;
     using TodoApi.Domain.SumTypes;
@@ -16,12 +14,10 @@ namespace TodoApi.WebUI.Controllers
     [ApiController]
     public class TodoController : ControllerBase
     {
-        private readonly TodoContext _context;
         private readonly ITodoService _todoService;
 
-        public TodoController(TodoContext context, ITodoService todoService = default)
+        public TodoController(ITodoService todoService = default)
         {
-            _context = context;
             _todoService = todoService ?? throw new ArgumentNullException(nameof(todoService));
         }
                 

@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using SimpleSpec.Bdd;
 
 namespace TodoApi.Unit.Test.Controllers
 {
-    using DataAccess;
     using Domain.Models;
     using Service.Contract;
     using TodoApi.Domain.SumTypes;
@@ -27,7 +25,7 @@ namespace TodoApi.Unit.Test.Controllers
                 [TestMethod]
                 public void It_Throws_ArgumentNullException()
                 {
-                    Assert.ThrowsException<ArgumentNullException>(() => new TodoController(default, default));
+                    Assert.ThrowsException<ArgumentNullException>(() => new TodoController(default));
                 }
             }
 
@@ -37,7 +35,7 @@ namespace TodoApi.Unit.Test.Controllers
                 protected override void Context()
                 {
                     _todoServiceMock = new Mock<ITodoService>();
-                    _sut = new TodoController(default, _todoServiceMock.Object);
+                    _sut = new TodoController(_todoServiceMock.Object);
                     _sut.GetAll().Wait();
                 }
 
@@ -58,7 +56,7 @@ namespace TodoApi.Unit.Test.Controllers
                     _todoServiceMock = new Mock<ITodoService>();
                     _todoServiceMock.Setup(s => s.GetTodoAsync(1))
                                     .ReturnsAsync(new TodoItem());
-                    _sut = new TodoController(default, _todoServiceMock.Object);
+                    _sut = new TodoController(_todoServiceMock.Object);
                     _todoItemResult = _sut.GetTodo(1).Result;
                 }
 
@@ -91,7 +89,7 @@ namespace TodoApi.Unit.Test.Controllers
                 {
                     // Arrange
                     _todoServiceMock = new Mock<ITodoService>();
-                    _sut = new TodoController(default, _todoServiceMock.Object);
+                    _sut = new TodoController(_todoServiceMock.Object);
 
                     // Act
                     _todoItemResult = _sut.GetTodo(1).Result;
@@ -117,7 +115,7 @@ namespace TodoApi.Unit.Test.Controllers
             {
                 protected override void Context()
                 {
-                    _sut = new TodoController(default, new Mock<ITodoService>().Object);
+                    _sut = new TodoController(new Mock<ITodoService>().Object);
                 }
 
                 [TestMethod]
@@ -136,7 +134,7 @@ namespace TodoApi.Unit.Test.Controllers
                     _todoServiceMock = new Mock<ITodoService>();
                     _todoServiceMock.Setup(s => s.CreateAsync(It.IsAny<TodoItem>()))
                                     .ReturnsAsync(new TodoItem { Id = 1 });
-                    _sut = new TodoController(default, _todoServiceMock.Object);
+                    _sut = new TodoController(_todoServiceMock.Object);
 
                     // Act
                     _createResult = _sut.Create(new TodoItem()).Result;
@@ -170,7 +168,7 @@ namespace TodoApi.Unit.Test.Controllers
                     _todoServiceMock = new Mock<ITodoService>();
                     _todoServiceMock.Setup(s => s.UpdateAsync(1, It.IsAny<TodoItem>()))
                                    .ReturnsAsync(Updated.NotFound);
-                    _sut = new TodoController(default, _todoServiceMock.Object);
+                    _sut = new TodoController(_todoServiceMock.Object);
                     _notFoundResult = _sut.Update(1, new TodoItem { Id = 1 }).Result;
                 }
 
@@ -198,7 +196,7 @@ namespace TodoApi.Unit.Test.Controllers
                     _todoServiceMock = new Mock<ITodoService>();
                     _todoServiceMock.Setup(s => s.UpdateAsync(1, It.IsAny<TodoItem>()))
                                    .ReturnsAsync(Updated.Invalid);
-                    _sut = new TodoController(default, _todoServiceMock.Object);
+                    _sut = new TodoController(_todoServiceMock.Object);
                     _badRequestResult = _sut.Update(1, new TodoItem { Id = 2 }).Result;
                 }
 
@@ -224,7 +222,7 @@ namespace TodoApi.Unit.Test.Controllers
                 protected override void Context()
                 {
                     _todoServiceMock = new Mock<ITodoService>();
-                    _sut = new TodoController(default, _todoServiceMock.Object);
+                    _sut = new TodoController(_todoServiceMock.Object);
                     _noContentResult = _sut.Update(1, new TodoItem { Id = 1, Name = "new name", IsComplete = true }).Result;
                 }
 
@@ -252,7 +250,7 @@ namespace TodoApi.Unit.Test.Controllers
                     _todoServiceMock = new Mock<ITodoService>();
                     _todoServiceMock.Setup(s => s.DeleteAsync(2))
                                     .ReturnsAsync(default(TodoItem));
-                    _sut = new TodoController(default, _todoServiceMock.Object);
+                    _sut = new TodoController(_todoServiceMock.Object);
                     _deleteResult = _sut.Delete(2).Result;
                 }
 
@@ -281,7 +279,7 @@ namespace TodoApi.Unit.Test.Controllers
                     _todoServiceMock = new Mock<ITodoService>();
                     _todoServiceMock.Setup(s => s.DeleteAsync(1))
                                     .ReturnsAsync(new TodoItem { Id = 1, Name = "name", IsComplete = true });
-                    _sut = new TodoController(default, _todoServiceMock.Object);
+                    _sut = new TodoController(_todoServiceMock.Object);
                     _deleteResult = _sut.Delete(1).Result;
                 }
 
