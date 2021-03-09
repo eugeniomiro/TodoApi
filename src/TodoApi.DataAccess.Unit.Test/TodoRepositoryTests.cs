@@ -89,7 +89,7 @@ namespace TodoApi.DataAccess.Unit.Test
                 var sut = await BuildSutWithOneRecord();
 
                 // Act & Assert
-                await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => sut.CreateAsync(default(TodoItem)));
+                await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => sut.CreateAsync(default));
             }
 
             [TestMethod]
@@ -99,7 +99,7 @@ namespace TodoApi.DataAccess.Unit.Test
                 var sut = await BuildSutWithOneRecord();
 
                 // Act & Assert
-                await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => sut.UpdateAsync(0, default(TodoItem)));
+                await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => sut.UpdateAsync(0, default));
             }
 
             [TestMethod]
@@ -173,11 +173,9 @@ namespace TodoApi.DataAccess.Unit.Test
                                             .UseInMemoryDatabase("TodoRepository tests")
                                             .Options;
 
-                using (var dbContext = new TodoContext(_dbContextConfig))
-                {
-                    dbContext.Database.EnsureCreated();
-                    dbContext.Database.EnsureDeleted();
-                }
+                using var dbContext = new TodoContext(_dbContextConfig);
+                dbContext.Database.EnsureCreated();
+                dbContext.Database.EnsureDeleted();
             }
 
             private async Task<TodoRepository> BuildSutWithOneRecord()

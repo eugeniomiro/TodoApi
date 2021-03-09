@@ -26,7 +26,7 @@ namespace TodoApi.Unit.Test.Controllers
                 [TestMethod]
                 public void It_Throws_ArgumentNullException()
                 {
-                    Assert.ThrowsException<ArgumentNullException>(() => new TodoController(default, default(ITodoService)));
+                    Assert.ThrowsException<ArgumentNullException>(() => new TodoController(default, default));
                 }
             }
 
@@ -122,7 +122,7 @@ namespace TodoApi.Unit.Test.Controllers
                 [TestMethod]
                 public async Task It_Throws_A_ArgumentNullException()
                 {
-                    await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => _sut.Create(default(TodoItem)));
+                    await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => _sut.Create(default));
                 }
             }
 
@@ -182,24 +182,11 @@ namespace TodoApi.Unit.Test.Controllers
             }
 
             [TestClass]
-            public class Wnen_Calling_Update_Method_With_An_Id_And_An_Empty_Item : TodoControllerContext
+            public class When_Calling_Update_Method_With_An_Id_And_An_Empty_Item : TodoControllerContext
             {
-                [ClassInitialize]
-                public static void ClassInitialize(TestContext _)
-                {
-                    _globalDbContextOptions = new DbContextOptionsBuilder<TodoContext>()
-                                                    .UseInMemoryDatabase(databaseName: "TodoContext Update tests")
-                                                    .Options;
-                    using (var dbcontext = new TodoContext(_globalDbContextOptions))
-                    {
-                        dbcontext.Database.EnsureDeleted();
-                        dbcontext.Database.EnsureCreated();
-                    }
-                }
-
                 protected override void Context()
                 {
-                    _sut = new TodoController(new TodoContext(_globalDbContextOptions), new Mock<ITodoService>().Object);
+                    _sut = new TodoController(default, new Mock<ITodoService>().Object);
                 }
 
                 [TestMethod]
@@ -208,12 +195,10 @@ namespace TodoApi.Unit.Test.Controllers
                     var badRequestResult = _sut.Update(2, new TodoItem()).Result;
                     Assert.IsInstanceOfType(badRequestResult, typeof(BadRequestResult));
                 }
-
-                private static DbContextOptions<TodoContext> _globalDbContextOptions;
             }
 
             [TestClass]
-            public class Wnen_Calling_Update_Method_With_A_NonExisting_Id_And_An_Empty_Item_With_The_Same_Id : TodoControllerContext
+            public class When_Calling_Update_Method_With_A_NonExisting_Id_And_An_Empty_Item_With_The_Same_Id : TodoControllerContext
             {
                 [ClassInitialize]
                 public static void ClassInitialize(TestContext _)
@@ -221,11 +206,9 @@ namespace TodoApi.Unit.Test.Controllers
                     _globalDbContextOptions = new DbContextOptionsBuilder<TodoContext>()
                                                     .UseInMemoryDatabase(databaseName: "TodoContext Update tests")
                                                     .Options;
-                    using (var dbcontext = new TodoContext(_globalDbContextOptions))
-                    {
-                        dbcontext.Database.EnsureDeleted();
-                        dbcontext.Database.EnsureCreated();
-                    }
+                    using var dbcontext = new TodoContext(_globalDbContextOptions);
+                    dbcontext.Database.EnsureDeleted();
+                    dbcontext.Database.EnsureCreated();
                 }
 
                 protected override void Context()
@@ -244,7 +227,7 @@ namespace TodoApi.Unit.Test.Controllers
             }
 
             [TestClass]
-            public class Wnen_Calling_Update_Method_With_An_Existing_Id_And_An_Empty_Item_With_Different_Id : TodoControllerContext
+            public class When_Calling_Update_Method_With_An_Existing_Id_And_An_Empty_Item_With_Different_Id : TodoControllerContext
             {
                 [ClassInitialize]
                 public static void ClassInitialize(TestContext _)
@@ -252,11 +235,9 @@ namespace TodoApi.Unit.Test.Controllers
                     _globalDbContextOptions = new DbContextOptionsBuilder<TodoContext>()
                                                     .UseInMemoryDatabase(databaseName: "TodoContext Update tests")
                                                     .Options;
-                    using (var dbcontext = new TodoContext(_globalDbContextOptions))
-                    {
-                        dbcontext.Database.EnsureDeleted();
-                        dbcontext.Database.EnsureCreated();
-                    }
+                    using var dbcontext = new TodoContext(_globalDbContextOptions);
+                    dbcontext.Database.EnsureDeleted();
+                    dbcontext.Database.EnsureCreated();
                 }
 
                 protected override void Context()
@@ -275,7 +256,7 @@ namespace TodoApi.Unit.Test.Controllers
             }
 
             [TestClass]
-            public class Wnen_Calling_Update_Method_With_An_Existing_Id_And_An_Empty_Item_With_The_Same_Id : TodoControllerContext
+            public class When_Calling_Update_Method_With_An_Existing_Id_And_An_Empty_Item_With_The_Same_Id : TodoControllerContext
             {
                 [ClassInitialize]
                 public static void ClassInitialize(TestContext _)
@@ -283,13 +264,11 @@ namespace TodoApi.Unit.Test.Controllers
                     _globalDbContextOptions = new DbContextOptionsBuilder<TodoContext>()
                                                     .UseInMemoryDatabase(databaseName: "TodoContext Update tests")
                                                     .Options;
-                    using (var dbcontext = new TodoContext(_globalDbContextOptions))
-                    {
-                        dbcontext.Database.EnsureDeleted();
-                        dbcontext.Database.EnsureCreated();
-                        dbcontext.TodoItems.Add(new TodoItem { Id = 1, Name = "name", IsComplete = false });
-                        dbcontext.SaveChanges();
-                    }
+                    using var dbcontext = new TodoContext(_globalDbContextOptions);
+                    dbcontext.Database.EnsureDeleted();
+                    dbcontext.Database.EnsureCreated();
+                    dbcontext.TodoItems.Add(new TodoItem { Id = 1, Name = "name", IsComplete = false });
+                    dbcontext.SaveChanges();
                 }
 
                 protected override void Context()
@@ -304,13 +283,11 @@ namespace TodoApi.Unit.Test.Controllers
                     Assert.IsInstanceOfType(noContentResult, typeof(NoContentResult));
 
                     // record in database was updated
-                    using (var dbContext = new TodoContext(_globalDbContextOptions))
-                    {
-                        var record = dbContext.TodoItems.Find(1L);
-                        Assert.AreEqual(1, record.Id);
-                        Assert.AreEqual("new name", record.Name);
-                        Assert.AreEqual(true, record.IsComplete);
-                    }
+                    using var dbContext = new TodoContext(_globalDbContextOptions);
+                    var record = dbContext.TodoItems.Find(1L);
+                    Assert.AreEqual(1, record.Id);
+                    Assert.AreEqual("new name", record.Name);
+                    Assert.AreEqual(true, record.IsComplete);
                 }
 
                 private static DbContextOptions<TodoContext> _globalDbContextOptions;
@@ -325,13 +302,11 @@ namespace TodoApi.Unit.Test.Controllers
                     _globalDbContextOptions = new DbContextOptionsBuilder<TodoContext>()
                                                     .UseInMemoryDatabase(databaseName: "TodoContext Delete tests")
                                                     .Options;
-                    using (var dbcontext = new TodoContext(_globalDbContextOptions))
-                    {
-                        dbcontext.Database.EnsureDeleted();
-                        dbcontext.Database.EnsureCreated();
-                        dbcontext.TodoItems.Add(new TodoItem { Id = 1, Name = "name", IsComplete = false });
-                        dbcontext.SaveChanges();
-                    }
+                    using var dbcontext = new TodoContext(_globalDbContextOptions);
+                    dbcontext.Database.EnsureDeleted();
+                    dbcontext.Database.EnsureCreated();
+                    dbcontext.TodoItems.Add(new TodoItem { Id = 1, Name = "name", IsComplete = false });
+                    dbcontext.SaveChanges();
                 }
 
                 protected override void Context()
@@ -360,13 +335,11 @@ namespace TodoApi.Unit.Test.Controllers
                     _globalDbContextOptions = new DbContextOptionsBuilder<TodoContext>()
                                                     .UseInMemoryDatabase(databaseName: "TodoContext Delete tests")
                                                     .Options;
-                    using (var dbcontext = new TodoContext(_globalDbContextOptions))
-                    {
-                        dbcontext.Database.EnsureDeleted();
-                        dbcontext.Database.EnsureCreated();
-                        dbcontext.TodoItems.Add(new TodoItem { Id = 1, Name = "name", IsComplete = false });
-                        dbcontext.SaveChanges();
-                    }
+                    using var dbcontext = new TodoContext(_globalDbContextOptions);
+                    dbcontext.Database.EnsureDeleted();
+                    dbcontext.Database.EnsureCreated();
+                    dbcontext.TodoItems.Add(new TodoItem { Id = 1, Name = "name", IsComplete = false });
+                    dbcontext.SaveChanges();
                 }
 
                 protected override void Context()
@@ -387,10 +360,8 @@ namespace TodoApi.Unit.Test.Controllers
                     Assert.AreEqual(false, deletedItem.IsComplete);
 
                     // item was deleted from database
-                    using (var dbContext = new TodoContext(_globalDbContextOptions))
-                    {
-                        Assert.IsNull(dbContext.TodoItems.Find(1L));                        
-                    }
+                    using var dbContext = new TodoContext(_globalDbContextOptions);
+                    Assert.IsNull(dbContext.TodoItems.Find(1L));
                 }
 
                 private static DbContextOptions<TodoContext> _globalDbContextOptions;

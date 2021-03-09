@@ -18,7 +18,7 @@ namespace TodoApi.WebUI.Controllers
         private readonly TodoContext _context;
         private readonly ITodoService _todoService;
 
-        public TodoController(TodoContext context, ITodoService todoService = default(ITodoService))
+        public TodoController(TodoContext context, ITodoService todoService = default)
         {
             _context = context;
             _todoService = todoService ?? throw new ArgumentNullException(nameof(todoService));
