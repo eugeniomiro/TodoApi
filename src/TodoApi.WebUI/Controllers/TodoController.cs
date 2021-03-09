@@ -32,7 +32,7 @@ namespace TodoApi.WebUI.Controllers
         [HttpGet("{id}", Name = nameof(GetTodo))]
         public async Task<ActionResult<TodoItem>> GetTodo(long id)
         {
-            var item = await _context.TodoItems.FindAsync(id);
+            var item = await _todoService.GetTodoAsync(id);
             if (item == null)
             {
                 return NotFound();

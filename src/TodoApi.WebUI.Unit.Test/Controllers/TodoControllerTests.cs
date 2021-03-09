@@ -1,19 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using SimpleSpec.Bdd;
 
 namespace TodoApi.Unit.Test.Controllers
 {
     using DataAccess;
     using Domain.Models;
-    using SimpleSpec.Bdd;
-    using WebUI.Controllers;
+    using Service.Contract;
     using WebUI;
-    using TodoApi.Service.Contract;
-    using Moq;
+    using WebUI.Controllers;
 
     public static class TodoControllerTests 
     {
@@ -51,80 +50,65 @@ namespace TodoApi.Unit.Test.Controllers
             }
 
             [TestClass]
-            public class When_Calling_GetTodo_Method_With_An_Existing_Id : TodoControllerContext
+            public class When_Calling_GetTodo_Method_Finds_A_Record : TodoControllerContext
             {
-                [ClassInitialize]
-                public static void ClassInitialize(TestContext _)
-                {
-                    _globalDbContextOptions = new DbContextOptionsBuilder<TodoContext>()
-                                                    .UseInMemoryDatabase(databaseName: "TodoContext GetTodo tests")
-                                                    .Options;
-                    using (var dbcontext = new TodoContext(_globalDbContextOptions))
-                    {
-                        dbcontext.Database.EnsureDeleted();
-                        dbcontext.Database.EnsureCreated();
-
-                        dbcontext.TodoItems.Add(new TodoItem { Id = 1, Name = "my todo", IsComplete = false });
-                        dbcontext.SaveChanges();
-                    }
-                }
-
                 protected override void Context()
                 {
-                    _sut = new TodoController(new TodoContext(_globalDbContextOptions), new Mock<ITodoService>().Object);
-                    _getTodoResult = _sut.GetTodo(1).Result;
+                    _todoServiceMock = new Mock<ITodoService>();
+                    _todoServiceMock.Setup(s => s.GetTodoAsync(1))
+                                    .ReturnsAsync(new TodoItem());
+                    _sut = new TodoController(default(TodoContext), _todoServiceMock.Object);
+                    _todoItemResult = _sut.GetTodo(1).Result;
                 }
 
                 [TestMethod]
-                public void It_Returns_Available_Record()
+                public void It_Calls_ITodoService_GetTodoAsync_Method()
                 {
-                    Assert.IsNotNull(_getTodoResult.Value);
-                    var todoItem = _getTodoResult.Value;
-                    Assert.AreEqual(1, todoItem.Id);
-                    Assert.AreEqual("my todo", todoItem.Name);
-                    Assert.AreEqual(false, todoItem.IsComplete);
+                    // Assert
+                    _todoServiceMock.Verify(s => s.GetTodoAsync(1), Times.Once);
                 }
 
-                private static DbContextOptions<TodoContext> _globalDbContextOptions;
-                private ActionResult<TodoItem> _getTodoResult;
+                [TestMethod]
+                public void It_Returns_A_TodoItem()
+                {
+                    // Assert
+                    Assert.IsInstanceOfType(_todoItemResult, typeof(ActionResult<TodoItem>));
+                    Assert.IsNotNull(_todoItemResult.Value);
+                }
+
+                private ActionResult<TodoItem> _todoItemResult;
+                private Mock<ITodoService> _todoServiceMock;
             }
 
             [TestClass]
-            public class When_Calling_GetTodo_Method_With_A_Nonexisting_Id : TodoControllerContext
+            public class When_Calling_GetTodo_Method_That_Doesnt_Find_A_Record : TodoControllerContext
             {
-                [ClassInitialize]
-                public static void ClassInitialize(TestContext _)
-                {
-                    _globalDbContextOptions = new DbContextOptionsBuilder<TodoContext>()
-                                                    .UseInMemoryDatabase(databaseName: "TodoContext GetTodo tests")
-                                                    .Options;
-                    using (var dbcontext = new TodoContext(_globalDbContextOptions))
-                    {
-                        dbcontext.Database.EnsureDeleted();
-                        dbcontext.Database.EnsureCreated();
-
-                        dbcontext.TodoItems.Add(new TodoItem { Id = 1, Name = "my todo", IsComplete = false });
-                        dbcontext.SaveChanges();
-                    }
-                }
+                private ActionResult<TodoItem> _todoItemResult;
+                private Mock<ITodoService> _todoServiceMock;
 
                 protected override void Context()
                 {
-                    _sut = new TodoController(new TodoContext(_globalDbContextOptions), new Mock<ITodoService>().Object);
-                    _getTodoResult = _sut.GetTodo(2).Result;
+                    // Arrange
+                    _todoServiceMock = new Mock<ITodoService>();
+                    _sut = new TodoController(default(TodoContext), _todoServiceMock.Object);
+
+                    // Act
+                    _todoItemResult = _sut.GetTodo(1).Result;
                 }
 
                 [TestMethod]
-                public void It_Returns_NotFound()
+                public void It_Calls_ITodoService_GetTodoAsync_Method()
                 {
-                    Assert.IsInstanceOfType(_getTodoResult.Result, typeof(StatusCodeResult));
-                    var statusCodeResult = _getTodoResult.Result as StatusCodeResult;
-                    Assert.AreEqual(404, statusCodeResult.StatusCode);
-                    Assert.IsNull(_getTodoResult.Value);
+                    // Assert
+                    _todoServiceMock.Verify(s => s.GetTodoAsync(1), Times.Once);
                 }
 
-                private static DbContextOptions<TodoContext> _globalDbContextOptions;
-                private ActionResult<TodoItem> _getTodoResult;
+                [TestMethod]
+                public void It_Returns_NotFound_Result()
+                {
+                    // Assert
+                    Assert.IsInstanceOfType(_todoItemResult.Result, typeof(NotFoundResult));
+                }
             }
 
             [TestClass]
