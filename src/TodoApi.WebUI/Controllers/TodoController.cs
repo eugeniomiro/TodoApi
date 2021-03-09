@@ -57,7 +57,7 @@ namespace TodoApi.WebUI.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(long id, TodoItem item)
         {
-            if (id != item.Id) {
+            if (item is null || id != item.Id) {
                 return BadRequest();
             }
 

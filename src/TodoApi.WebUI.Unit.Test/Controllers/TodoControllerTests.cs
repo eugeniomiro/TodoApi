@@ -162,33 +162,23 @@ namespace TodoApi.Unit.Test.Controllers
             }
 
             [TestClass]
-            public class Wnen_Calling_Update_Method_With_An_Id_And_Null_Item : TodoControllerContext
+            public class When_Calling_Update_Method_With_An_Id_And_Null_Item : TodoControllerContext
             {
-                [ClassInitialize]
-                public static void ClassInitialize(TestContext _)
-                {
-                    _globalDbContextOptions = new DbContextOptionsBuilder<TodoContext>()
-                                                    .UseInMemoryDatabase(databaseName: "TodoContext Update tests")
-                                                    .Options;
-                    using (var dbcontext = new TodoContext(_globalDbContextOptions))
-                    {
-                        dbcontext.Database.EnsureDeleted();
-                        dbcontext.Database.EnsureCreated();
-                    }
-                }
-
                 protected override void Context()
                 {
-                    _sut = new TodoController(new TodoContext(_globalDbContextOptions), new Mock<ITodoService>().Object);
+                    // Arrange
+                    _sut = new TodoController(default, new Mock<ITodoService>().Object);
                 }
 
                 [TestMethod]
-                public async Task It_Throws_A_NullReferenceException()
+                public async Task It_Returns_BadRequest()
                 {
-                    await Assert.ThrowsExceptionAsync<NullReferenceException>(() => _sut.Update(2, default(TodoItem)));
-                }
+                    // Act
+                    var updateResult = await _sut.Update(2, default);
 
-                private static DbContextOptions<TodoContext> _globalDbContextOptions;
+                    // Assert
+                    Assert.IsInstanceOfType(updateResult, typeof(BadRequestResult));
+                }
             }
 
             [TestClass]

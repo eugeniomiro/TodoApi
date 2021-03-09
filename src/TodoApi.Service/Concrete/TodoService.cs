@@ -6,6 +6,7 @@ namespace TodoApi.Service.Concrete
     using DataAccess.Contract;
     using Domain.Models;
     using Service.Contract;
+    using Domain.SumTypes;
 
     public class TodoService : ITodoService
     {
@@ -31,7 +32,7 @@ namespace TodoApi.Service.Concrete
             return await _todoRepository.CreateAsync(todoItem);
         }
 
-        public async Task<TodoItem> UpdateAsync(long id, TodoItem todoItem)
+        public async Task<Updated<TodoItem>> UpdateAsync(long id, TodoItem todoItem)
         {
             return await _todoRepository.UpdateAsync(id, todoItem);
         }

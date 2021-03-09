@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 namespace TodoApi.DataAccess.Contract
 {
     using Domain.Models;
+    using Domain.SumTypes;
 
     public interface ITodoRepository
     {
@@ -11,6 +12,6 @@ namespace TodoApi.DataAccess.Contract
         Task<TodoItem> DeleteAsync(long id);
         Task<IEnumerable<TodoItem>> GetAllAsync();
         Task<TodoItem> GetTodoAsync(long id);
-        Task<TodoItem> UpdateAsync(long id, TodoItem todoItem);
+        Task<Updated<TodoItem>> UpdateAsync(long id, TodoItem todoItem);
     }
 }

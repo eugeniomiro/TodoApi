@@ -10,6 +10,7 @@ namespace TodoApi.DataAccess.Unit.Test
 {
     using Domain.Models;
     using TodoApi.DataAccess.Concrete;
+    using TodoApi.Domain.SumTypes;
 
     public static class TodoRepositoryTests 
     {
@@ -102,23 +103,29 @@ namespace TodoApi.DataAccess.Unit.Test
             }
 
             [TestMethod]
-            public async Task When_Update_Method_Is_Called_From_Sut_With_A_Non_Null_TodoItem_With_Non_Matching_Id_It_Throws_ArgumentException()
+            public async Task When_Update_Method_Is_Called_From_Sut_With_A_Non_Null_TodoItem_With_Non_Matching_Id_It_Returns_UpdatedTodoItem_Invalid()
             {
                 // Arrange
                 var sut = await BuildSutWithOneRecord();
 
-                // Act & Assert
-                await Assert.ThrowsExceptionAsync<ArgumentException>(() => sut.UpdateAsync(1, new TodoItem()));
+                // Act
+                var updatedTodoItem = await sut.UpdateAsync(1, new TodoItem());
+
+                // Assert
+                Assert.IsInstanceOfType(updatedTodoItem, typeof(Updated<TodoItem>.Invalid));
             }
 
             [TestMethod]
-            public async Task When_Update_Method_Is_Called_From_Sut_With_A_Non_Null_TodoItem_With_Matching_Id_Non_Existing_In_Database_It_Throws_KeyNotFoundException()
+            public async Task When_Update_Method_Is_Called_From_Sut_With_A_Non_Null_TodoItem_With_Matching_Id_Non_Existing_In_Database_It_Returns_UpdatedTodoItem_NotFound()
             {
                 // Arrange
                 var sut = await BuildSutWithOneRecord();
 
-                // Act & Assert 
-                await Assert.ThrowsExceptionAsync<KeyNotFoundException>(() => sut.UpdateAsync(3, new TodoItem { Id = 3, Name = "not found name", IsComplete = true }));
+                // Act
+                var updatedTodoItem = await sut.UpdateAsync(3, new TodoItem { Id = 3, Name = "not found name", IsComplete = true });
+
+                // Assert 
+                Assert.IsInstanceOfType(updatedTodoItem, typeof(Updated<TodoItem>.NotFound));
             }
 
             [TestMethod]
@@ -131,9 +138,11 @@ namespace TodoApi.DataAccess.Unit.Test
                 var returnedTodoItem = await sut.UpdateAsync(1, new TodoItem { Id = 1, Name = "new name", IsComplete = true });
 
                 // Assert
-                Assert.AreEqual(1, returnedTodoItem.Id);
-                Assert.AreEqual("new name", returnedTodoItem.Name);
-                Assert.AreEqual(true, returnedTodoItem.IsComplete);
+                Assert.IsInstanceOfType(returnedTodoItem, typeof(Updated<TodoItem>.Accepted));
+                returnedTodoItem.TryGetValue(out var todoItem);
+                Assert.AreEqual(1, todoItem.Id);
+                Assert.AreEqual("new name", todoItem.Name);
+                Assert.AreEqual(true, todoItem.IsComplete);
             }
 
             [TestMethod]
