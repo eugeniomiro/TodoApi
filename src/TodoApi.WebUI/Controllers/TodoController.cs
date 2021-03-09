@@ -10,6 +10,7 @@ namespace TodoApi.WebUI.Controllers
     using DataAccess;
     using Domain.Models;
     using Service.Contract;
+    using TodoApi.Domain.SumTypes;
 
     [Route("api/[controller]")]
     [ApiController]
@@ -57,22 +58,17 @@ namespace TodoApi.WebUI.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(long id, TodoItem item)
         {
-            if (item is null || id != item.Id) {
-                return BadRequest();
-            }
+            var updatedTodo = await _todoService.UpdateAsync(id, item);
 
-            _context.Entry(item).State = EntityState.Modified;
-            
-            try {
-                await _context.SaveChangesAsync();
-            } catch (DbUpdateConcurrencyException) {
-                if (!TodoItemExists(id)) {
+            switch (updatedTodo)
+            {
+                case Updated<TodoItem>.Invalid:
+                    return BadRequest();
+                case Updated<TodoItem>.NotFound:
                     return NotFound();
-                } else {
-                    throw;
-                }
+                default:
+                    return NoContent();
             }
-            return NoContent();
         }
 
         [HttpDelete("{id}")]
