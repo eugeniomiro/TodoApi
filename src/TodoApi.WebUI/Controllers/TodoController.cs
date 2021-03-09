@@ -8,16 +8,19 @@ namespace TodoApi.WebUI.Controllers
 {
     using Domain.Models;
     using DataAccess;
+    using Service.Contract;
 
     [Route("api/[controller]")]
     [ApiController]
     public class TodoController : ControllerBase
     {
         private readonly TodoContext _context;
+        private readonly ITodoService _todoService;
 
-        public TodoController(TodoContext context)
+        public TodoController(TodoContext context, ITodoService todoService = default(ITodoService))
         {
-            _context = context;            
+            _context = context;
+            _todoService = todoService;
         }
                 
         [HttpGet]

@@ -4,6 +4,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TodoApi.DataAccess;
+using TodoApi.DataAccess.Concrete;
+using TodoApi.DataAccess.Contract;
+using TodoApi.Service.Concrete;
+using TodoApi.Service.Contract;
 
 namespace TodoApi.WebUI
 {
@@ -13,6 +17,8 @@ namespace TodoApi.WebUI
         {
             services.AddDbContext<TodoContext>(opt => 
                 opt.UseInMemoryDatabase("TodoList"));
+            services.AddScoped<ITodoService, TodoService>();
+            services.AddScoped<ITodoRepository, TodoRepository>();
             services.AddControllers();
         }
 

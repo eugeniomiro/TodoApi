@@ -12,6 +12,7 @@ namespace TodoApi.Unit.Test.Controllers
     using SimpleSpec.Bdd;
     using WebUI.Controllers;
     using WebUI;
+    using TodoApi.Service.Contract;
 
     public static class TodoControllerTests 
     {
@@ -24,7 +25,7 @@ namespace TodoApi.Unit.Test.Controllers
             {
                 protected override void Context()
                 {
-                    _sut = new TodoController(default(TodoContext));
+                    _sut = new TodoController(default(TodoContext), default(ITodoService));
                 }
 
                 [TestMethod]
