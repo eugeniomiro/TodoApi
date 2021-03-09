@@ -74,20 +74,13 @@ namespace TodoApi.WebUI.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<TodoItemDTO>> Delete(long id)
         {
-            var todo = await _context.TodoItems.FindAsync(id);
+            var todo = await _todoService.DeleteAsync(id);
             if (todo == null)
             {
                 return NotFound();
             }
 
-            _context.TodoItems.Remove(todo);
-            await _context.SaveChangesAsync();
             return ItemToDTO(todo);
-        }
-
-        private bool TodoItemExists(long id)
-        {
-            return _context.TodoItems.Any(e => e.Id == id);
         }
 
         private static TodoItemDTO ItemToDTO(TodoItem item)

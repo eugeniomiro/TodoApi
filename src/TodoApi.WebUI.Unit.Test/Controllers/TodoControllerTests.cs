@@ -247,22 +247,12 @@ namespace TodoApi.Unit.Test.Controllers
             [TestClass]
             public class When_Calling_Delete_Method_With_A_NonExisting_Id : TodoControllerContext
             {
-                [ClassInitialize]
-                public static void ClassInitialize(TestContext _)
-                {
-                    _globalDbContextOptions = new DbContextOptionsBuilder<TodoContext>()
-                                                    .UseInMemoryDatabase(databaseName: "TodoContext Delete tests")
-                                                    .Options;
-                    using var dbcontext = new TodoContext(_globalDbContextOptions);
-                    dbcontext.Database.EnsureDeleted();
-                    dbcontext.Database.EnsureCreated();
-                    dbcontext.TodoItems.Add(new TodoItem { Id = 1, Name = "name", IsComplete = false });
-                    dbcontext.SaveChanges();
-                }
-
                 protected override void Context()
                 {
-                    _sut = new TodoController(new TodoContext(_globalDbContextOptions), new Mock<ITodoService>().Object);
+                    _todoServiceMock = new Mock<ITodoService>();
+                    _todoServiceMock.Setup(s => s.DeleteAsync(2))
+                                    .ReturnsAsync(default(TodoItem));
+                    _sut = new TodoController(default, _todoServiceMock.Object);
                     _deleteResult = _sut.Delete(2).Result;
                 }
 
@@ -273,29 +263,25 @@ namespace TodoApi.Unit.Test.Controllers
                     Assert.IsNull(_deleteResult.Value);
                 }
 
-                private static DbContextOptions<TodoContext> _globalDbContextOptions;
+                [TestMethod]
+                public void It_Calls_TodoService_DeleteAsync_Method_Once()
+                {
+                    _todoServiceMock.Verify(s => s.DeleteAsync(2), Times.Once);
+                }
+
                 private ActionResult<TodoItemDTO> _deleteResult;
+                private Mock<ITodoService> _todoServiceMock;
             }
 
             [TestClass]
             public class When_Calling_Delete_Method_With_An_Existing_Id : TodoControllerContext
             {
-                [ClassInitialize]
-                public static void ClassInitialize(TestContext _)
-                {
-                    _globalDbContextOptions = new DbContextOptionsBuilder<TodoContext>()
-                                                    .UseInMemoryDatabase(databaseName: "TodoContext Delete tests")
-                                                    .Options;
-                    using var dbcontext = new TodoContext(_globalDbContextOptions);
-                    dbcontext.Database.EnsureDeleted();
-                    dbcontext.Database.EnsureCreated();
-                    dbcontext.TodoItems.Add(new TodoItem { Id = 1, Name = "name", IsComplete = false });
-                    dbcontext.SaveChanges();
-                }
-
                 protected override void Context()
                 {
-                    _sut = new TodoController(new TodoContext(_globalDbContextOptions), new Mock<ITodoService>().Object);
+                    _todoServiceMock = new Mock<ITodoService>();
+                    _todoServiceMock.Setup(s => s.DeleteAsync(1))
+                                    .ReturnsAsync(new TodoItem { Id = 1, Name = "name", IsComplete = true });
+                    _sut = new TodoController(default, _todoServiceMock.Object);
                     _deleteResult = _sut.Delete(1).Result;
                 }
 
@@ -308,15 +294,11 @@ namespace TodoApi.Unit.Test.Controllers
 
                     Assert.AreEqual(1, deletedItem.Id);
                     Assert.AreEqual("name", deletedItem.Name);
-                    Assert.AreEqual(false, deletedItem.IsComplete);
-
-                    // item was deleted from database
-                    using var dbContext = new TodoContext(_globalDbContextOptions);
-                    Assert.IsNull(dbContext.TodoItems.Find(1L));
+                    Assert.AreEqual(true, deletedItem.IsComplete);
                 }
 
-                private static DbContextOptions<TodoContext> _globalDbContextOptions;
                 private ActionResult<TodoItemDTO> _deleteResult;
+                private Mock<ITodoService> _todoServiceMock;
             }
         }
     }
