@@ -20,7 +20,7 @@ namespace TodoApi.WebUI.Controllers
         public TodoController(TodoContext context, ITodoService todoService = default(ITodoService))
         {
             _context = context;
-            _todoService = todoService;
+            _todoService = todoService ?? throw new System.ArgumentNullException(nameof(todoService));
         }
                 
         [HttpGet]

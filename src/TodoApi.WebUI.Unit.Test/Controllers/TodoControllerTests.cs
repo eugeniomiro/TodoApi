@@ -22,17 +22,12 @@ namespace TodoApi.Unit.Test.Controllers
             protected TodoController _sut;
             
             [TestClass]
-            public class When_Constructor_Is_Called_With_Null_Parameter : TodoControllerContext
+            public class Creating_TodoController_With_Default_TodoService : TodoControllerContext
             {
-                protected override void Context()
-                {
-                    _sut = new TodoController(default(TodoContext), default(ITodoService));
-                }
-
                 [TestMethod]
-                public void Calling_GetAll_Method__Throws_NullReferenceException()
+                public void It_Throws_ArgumentNullException()
                 {
-                    Assert.ThrowsExceptionAsync<NullReferenceException>(() => _sut.GetAll());
+                    Assert.ThrowsException<ArgumentNullException>(() => new TodoController(default(TodoContext), default(ITodoService)));
                 }
             }
 
@@ -76,7 +71,7 @@ namespace TodoApi.Unit.Test.Controllers
 
                 protected override void Context()
                 {
-                    _sut = new TodoController(new TodoContext(_globalDbContextOptions));
+                    _sut = new TodoController(new TodoContext(_globalDbContextOptions), new Mock<ITodoService>().Object);
                     _getTodoResult = _sut.GetTodo(1).Result;
                 }
 
@@ -115,7 +110,7 @@ namespace TodoApi.Unit.Test.Controllers
 
                 protected override void Context()
                 {
-                    _sut = new TodoController(new TodoContext(_globalDbContextOptions));
+                    _sut = new TodoController(new TodoContext(_globalDbContextOptions), new Mock<ITodoService>().Object);
                     _getTodoResult = _sut.GetTodo(2).Result;
                 }
 
@@ -150,7 +145,7 @@ namespace TodoApi.Unit.Test.Controllers
 
                 protected override void Context()
                 {
-                    _sut = new TodoController(new TodoContext(_globalDbContextOptions));
+                    _sut = new TodoController(new TodoContext(_globalDbContextOptions), new Mock<ITodoService>().Object);
                 }
 
                 [TestMethod]
@@ -180,7 +175,7 @@ namespace TodoApi.Unit.Test.Controllers
 
                 protected override void Context()
                 {
-                    _sut = new TodoController(new TodoContext(_globalDbContextOptions));
+                    _sut = new TodoController(new TodoContext(_globalDbContextOptions), new Mock<ITodoService>().Object);
                     _createResult = _sut.Create(new TodoItem { Name = "othertodo", IsComplete = false }).Result;
                 }
 
@@ -227,7 +222,7 @@ namespace TodoApi.Unit.Test.Controllers
 
                 protected override void Context()
                 {
-                    _sut = new TodoController(new TodoContext(_globalDbContextOptions));
+                    _sut = new TodoController(new TodoContext(_globalDbContextOptions), new Mock<ITodoService>().Object);
                 }
 
                 [TestMethod]
@@ -257,7 +252,7 @@ namespace TodoApi.Unit.Test.Controllers
 
                 protected override void Context()
                 {
-                    _sut = new TodoController(new TodoContext(_globalDbContextOptions));
+                    _sut = new TodoController(new TodoContext(_globalDbContextOptions), new Mock<ITodoService>().Object);
                 }
 
                 [TestMethod]
@@ -288,7 +283,7 @@ namespace TodoApi.Unit.Test.Controllers
 
                 protected override void Context()
                 {
-                    _sut = new TodoController(new TodoContext(_globalDbContextOptions));
+                    _sut = new TodoController(new TodoContext(_globalDbContextOptions), new Mock<ITodoService>().Object);
                 }
 
                 [TestMethod]
@@ -319,7 +314,7 @@ namespace TodoApi.Unit.Test.Controllers
 
                 protected override void Context()
                 {
-                    _sut = new TodoController(new TodoContext(_globalDbContextOptions));
+                    _sut = new TodoController(new TodoContext(_globalDbContextOptions), new Mock<ITodoService>().Object);
                 }
 
                 [TestMethod]
@@ -352,7 +347,7 @@ namespace TodoApi.Unit.Test.Controllers
 
                 protected override void Context()
                 {
-                    _sut = new TodoController(new TodoContext(_globalDbContextOptions));
+                    _sut = new TodoController(new TodoContext(_globalDbContextOptions), new Mock<ITodoService>().Object);
                 }
 
                 [TestMethod]
@@ -394,7 +389,7 @@ namespace TodoApi.Unit.Test.Controllers
 
                 protected override void Context()
                 {
-                    _sut = new TodoController(new TodoContext(_globalDbContextOptions));
+                    _sut = new TodoController(new TodoContext(_globalDbContextOptions), new Mock<ITodoService>().Object);
                     _deleteResult = _sut.Delete(2).Result;
                 }
 
@@ -429,7 +424,7 @@ namespace TodoApi.Unit.Test.Controllers
 
                 protected override void Context()
                 {
-                    _sut = new TodoController(new TodoContext(_globalDbContextOptions));
+                    _sut = new TodoController(new TodoContext(_globalDbContextOptions), new Mock<ITodoService>().Object);
                     _deleteResult = _sut.Delete(1).Result;
                 }
 
