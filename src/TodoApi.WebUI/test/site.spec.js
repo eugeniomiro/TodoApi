@@ -233,6 +233,9 @@ describe('onSubmitForm()', function() {
     it('should have been called with method PUT', function() {
         assert.equal(jQuery.ajax.getCall(0).args[0].type, 'PUT');
     });
+    it('should return false', function () {
+        assert.isFalse(result);
+    })
     after(function() {
         editId.remove();
         sandbox.restore();

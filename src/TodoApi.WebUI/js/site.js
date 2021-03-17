@@ -66,9 +66,7 @@ function onSubmitForm() {
         accepts: 'application/json',
         contentType: 'application/json',
         data: JSON.stringify(item),
-        success: function (result) {
-            getData();
-        }
+        success: getData
     });
 
     closeInput();
