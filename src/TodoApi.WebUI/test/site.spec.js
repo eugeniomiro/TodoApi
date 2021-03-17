@@ -15,7 +15,8 @@ if (typeof require !== 'undefined') {
         editItem = site.editItem,
         updateCount = site.updateCount,
         closeInput = site.closeInput,
-        onSubmitForm = site.onSubmitForm;
+        onSubmitForm = site.onSubmitForm,
+        onReady = site.onReady;
 } else {
     get_Todos = function() { return todos };
     set_Todos = function(newTodos) { todos = newTodos }
@@ -247,7 +248,7 @@ describe('onReady', function() {
     before(function() {
         jqueryfunction = jQuery.find;
         jQuery.find = sandbox.spy();
-        site.onReady();
+        onReady();
     });
     after(function() {
         jQuery.find = jqueryfunction;
