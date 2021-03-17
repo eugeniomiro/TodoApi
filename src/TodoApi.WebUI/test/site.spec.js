@@ -239,3 +239,18 @@ describe('onSubmitForm()', function() {
     });
 });
 
+describe('onReady', function() {
+    let jqueryfunction;
+    before(function() {
+        jqueryfunction = jQuery.find;
+        jQuery.find = sandbox.spy();
+        site.onReady();
+    });
+    after(function() {
+        jQuery.find = jqueryfunction;
+        sandbox.restore();
+    });
+    it('should execute getData once', function() {
+         assert.equal(3, jQuery.find.callCount);
+    });
+});
