@@ -10,12 +10,17 @@ function getData() {
     });
 }
 
+function addItemSucceeded(result) {
+    getData();
+    $('#add-name').val('');
+}
+
 function addItem() {
     const item = {
         'name': $('#add-name').val(),
         'isComplete': false
     };
-
+    let self = this;
     $.ajax({
         type: 'POST',
         accepts: 'application/json',
@@ -25,10 +30,7 @@ function addItem() {
         error: function (jqXHR, textStatus, errorThrown) {
             alert(textStatus);
         },
-        success: function (result) {
-            getData();
-            $('#add-name').val('');
-        }
+        success: addItemSucceeded
     });
 }
 
@@ -130,6 +132,7 @@ if (typeof exports !== 'undefined') {
     exports.getDataSuccess = getDataSuccess;
     exports.getData = getData;
     exports.addItem = addItem;
+    exports.addItemSucceeded = addItemSucceeded
     exports.deleteItem = deleteItem;
     exports.editItem = editItem;
     exports.updateCount = updateCount;

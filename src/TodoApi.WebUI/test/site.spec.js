@@ -9,8 +9,9 @@ if (typeof require !== 'undefined') {
     var get_Todos = site.get_Todos,
         set_Todos = site.set_Todos,
         getDataSuccess = site.getDataSuccess,
-        getData = site.getData, 
+        getData = site.getData,
         addItem = site.addItem,
+        addItemSucceeded = site.addItemSucceeded,
         deleteItem = site.deleteItem,
         editItem = site.editItem,
         updateCount = site.updateCount,
@@ -71,21 +72,41 @@ describe('getData()', function() {
     });
 });
 
-describe('addItem()', function() {
-    before(function() {
+describe('addItem()', function () {
+
+    beforeEach(function () {
         sandbox.stub(jQuery, "ajax");
         addItem();
     });
-    it('should execute ajax method once', function() {
+    it('should execute ajax method once', function () {
         assert.isTrue(jQuery.ajax.calledOnce);
     });
-    it('should have been called with todoApi url', function() {
+    it('should have been called with todoApi url', function () {
         assert.equal(jQuery.ajax.getCall(0).args[0].url, todoApi);
     });
-    it('should have been called with method POST', function() {
+    it('should have been called with method POST', function () {
         assert.equal(jQuery.ajax.getCall(0).args[0].type, 'POST');
     });
-    after(function() {
+    it('should have been called with accepts "application/json"', function () {
+        assert.equal(jQuery.ajax.getCall(0).args[0].accepts, 'application/json');
+    });
+    it('should have been called with contentType "application/json"', function () {
+        assert.equal(jQuery.ajax.getCall(0).args[0].contentType, 'application/json');
+    });
+    afterEach(function () {
+        sandbox.restore();
+    });
+});
+
+describe("addItemSucceeded()", function () {
+    beforeEach(function () {
+        sandbox.stub(jQuery, "ajax");
+        addItemSucceeded();
+    });
+    it("should execute getData method once", function () {
+        assert.isTrue(jQuery.ajax.calledOnce);
+    });
+    afterEach(function () {
         sandbox.restore();
     });
 });
@@ -243,7 +264,7 @@ describe('onSubmitForm()', function() {
     });
 });
 
-describe('onReady', function() {
+describe('onReady()', function() {
     let jqueryfunction;
     before(function() {
         jqueryfunction = jQuery.find;
@@ -254,7 +275,7 @@ describe('onReady', function() {
         jQuery.find = jqueryfunction;
         sandbox.restore();
     });
-    it('should execute getData once', function() {
+    it('should execute jQuery.find three times', function() {
          assert.equal(3, jQuery.find.callCount);
     });
 });
