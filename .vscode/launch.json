@@ -10,9 +10,9 @@
             "request": "launch",
             "preLaunchTask": "gulp publish",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/src/TodoApi/bin/Debug/net5.0/TodoApi.dll",
+            "program": "${workspaceFolder}/src/TodoApi.WebUI/bin/Debug/net5.0/TodoApi.WebUI.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/src/TodoApi",
+            "cwd": "${workspaceFolder}/src/TodoApi.WebUI",
             "stopAtEntry": false,
             "internalConsoleOptions": "openOnSessionStart",
             "launchBrowser": {

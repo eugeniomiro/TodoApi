@@ -20,7 +20,7 @@ let paths = {
     minCss: webroot + "css/**/*.min.css",
     csProjs: '**/*.csproj',
     csTestProjs: '../**/*[Tt]est*.csproj',
-    csWebProject: 'TodoApi.csproj',
+    csWebProject: 'TodoApi.WebUI.csproj',
     concatJsDest: webroot + "js/site.min.js",
     concatCssDest: webroot + "css/site.min.css",
 };

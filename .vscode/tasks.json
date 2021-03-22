@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/src/TodoApi/TodoApi.csproj"
+                "${workspaceFolder}/src/TodoApi.WebUI/TodoApi.WebUI.csproj"
             ],
             "problemMatcher": "$msCompile"
         },
@@ -16,7 +16,7 @@
             "command": "gulp",
             "type": "process",
             "options": {
-                "cwd": "./src/TodoApi"
+                "cwd": "./src/TodoApi.WebUI"
             },
             "args": [
                 "publish",
