@@ -6,6 +6,11 @@
   "scripts": {
     "test": "nyc mocha  --reporter=nyan --require testSetup.js \"test\""
   },
+  "nyc":{
+    "exclude":[
+      "testSetup.js"
+    ]
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/eugeniomiro/TodoApi.git"
