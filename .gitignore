@@ -8,6 +8,6 @@ coverage/
 TestResults/
 
 #ignored files
-public/css/site.min.css
-public/js/site.min.js
 *.suo
+*.min.js
+*.min.css
