@@ -8,6 +8,8 @@ const concat = require("gulp-concat");
 const cssmin = require("gulp-cssmin");
 const uglify = require("gulp-uglify");
 const Server  = require('karma').Server;
+const ts = require("gulp-typescript");
+const tsProject = ts.createProject("typescript.json");
 
 let version = `1.0.` + (process.env.BUILD_NUMBER || '0');
 let configuration = arg.config || process.env.BUILD_CONFIGURATION || 'Release';
@@ -72,6 +74,12 @@ task("clean:css", function(cb) {
 
 task("clean", series("clean:js", "clean:css", "clean:dotnet"));
 
+task("build:ts", function() {
+    return tsProject.src()
+                    .pipe(tsProject()).js
+                    .pipe(dest("dist"));
+});
+
 task("min:js", function() {
     return src([paths.js, "!" + paths.minJs, "!" + paths.cmdLineArgs], { base: "." })
         .pipe(concat(paths.concatJsDest))
@@ -87,6 +95,7 @@ task("min:css", function() {
 });
 
 task("min", series("min:js", "min:css"));
+
 task('test:js', function(done) {
     new Server({
         configFile: __dirname + "/karma.conf.js",
@@ -101,7 +110,7 @@ task('run:dotnet', series("test", ()=>{
                 .pipe(run());
 }));
 
-task("publish", series("clean", "min", "publish:dotnet"));
+task("publish", series("build:ts", "clean", "min", "publish:dotnet"));
 
 task('tdd', function(done) {
     new Server({
