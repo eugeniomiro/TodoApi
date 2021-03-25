@@ -266,16 +266,20 @@ describe('onSubmitForm()', function() {
 
 describe('onReady()', function() {
     let jqueryfunction;
-    before(function() {
-        jqueryfunction = jQuery.find;
-        jQuery.find = sandbox.spy();
+    beforeEach(function() {
+        jqueryfunction = $;
+        $ = sandbox.stub().returns({ 
+            on: function() {}
+        });
+        $.ajax = sandbox.stub();
         onReady();
     });
-    after(function() {
-        jQuery.find = jqueryfunction;
+    afterEach(function() {
+        $ = jqueryfunction;
         sandbox.restore();
     });
-    it('should execute jQuery.find three times', function() {
-         assert.equal(3, jQuery.find.callCount);
+    it('should execute $() three times and $.ajax one', function() {
+        assert.equal(3, $.callCount);
+        assert.isTrue($.ajax.calledOnce);
     });
 });
