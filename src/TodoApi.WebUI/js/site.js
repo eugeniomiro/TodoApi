@@ -2,17 +2,45 @@
 const uri = 'api/todo';
 let todos = null;
 
+function getDataSuccess(data, updateCount) {
+    $('#todos').empty();
+    updateCount(data.length);
+    $.each(data, function (key, item) {
+        let complete = $('<input disabled="true" type="checkbox">');
+        $('#todos').append(
+            $('<tr>').append($('<td>').append(complete))
+                .append($('<td>').text(item.name))
+                .append($('<td>').append($('<button>').text('Edit')
+                    .data('id', item.id)
+                    .on('click', editItem)))
+                .append($('<td>').append($('<button>').text('Delete')
+                    .data('id', item.id)
+                    .on('click', deleteItem)))
+        );
+        complete.prop('checked', !!item.isComplete);
+    });
+    todos = data;
+}
+
+function getDataSucceeded(data) {
+    getDataSuccess(data, updateCount);
+}
+
 function getData() {
     $.ajax({
         type: 'GET',
         url: uri,
-        success: function (data) { getDataSuccess(data, updateCount); }
+        success: getDataSucceeded
     });
 }
 
-function addItemSucceeded(result) {
+function addItemSucceeded() {
     getData();
     $('#add-name').val('');
+}
+
+function addItemFailed(jqXHR, textStatus, errorThrown) {
+    alert(textStatus);
 }
 
 function addItem() {
@@ -27,9 +55,7 @@ function addItem() {
         url: uri,
         contentType: 'application/json',
         data: JSON.stringify(item),
-        error: function (jqXHR, textStatus, errorThrown) {
-            alert(textStatus);
-        },
+        error: addItemFailed,
         success: addItemSucceeded
     });
 }
@@ -107,32 +133,14 @@ function updateCount(data) {
     }
 }
 
-function getDataSuccess(data, updateCount) {
-    $('#todos').empty();
-    updateCount(data.length);
-    $.each(data, function (key, item) {
-        let complete = $('<input disabled="true" type="checkbox">');
-        $('#todos').append(
-            $('<tr>').append($('<td>').append(complete))
-                .append($('<td>').text(item.name))
-                .append($('<td>').append($('<button>').text('Edit')
-                    .data('id', item.id)
-                    .on('click', editItem)))
-                .append($('<td>').append($('<button>').text('Delete')
-                    .data('id', item.id)
-                    .on('click', deleteItem)))
-        );
-        complete.prop('checked', !!item.isComplete);
-    });
-    todos = data;
-}
-
 // If we're running under Node, 
 if (typeof exports !== 'undefined') {
     exports.getDataSuccess = getDataSuccess;
     exports.getData = getData;
+    exports.getDataSucceeded = getDataSucceeded;
     exports.addItem = addItem;
-    exports.addItemSucceeded = addItemSucceeded
+    exports.addItemSucceeded = addItemSucceeded;
+    exports.addItemFailed = addItemFailed;
     exports.deleteItem = deleteItem;
     exports.editItem = editItem;
     exports.updateCount = updateCount;

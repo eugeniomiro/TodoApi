@@ -8,10 +8,12 @@ if (typeof require !== 'undefined') {
     var site = require("../js/site");
     var get_Todos = site.get_Todos,
         set_Todos = site.set_Todos,
-        getDataSuccess = site.getDataSuccess,
+        getDataSucceeded = site.getDataSucceeded,
         getData = site.getData,
+        getDataSuccess = site.getDataSuccess,
         addItem = site.addItem,
         addItemSucceeded = site.addItemSucceeded,
+        addItemFailed = site.addItemFailed,
         deleteItem = site.deleteItem,
         editItem = site.editItem,
         updateCount = site.updateCount,
@@ -25,7 +27,16 @@ if (typeof require !== 'undefined') {
 const sandbox = sinon.createSandbox();
 const todoApi = 'api/todo';
 
-describe('getDataSuccess()', function() {
+describe('getDataSucceeded()', function() {
+    it('can not be executed with null parameter, it throws "TypeError: Cannot read property \'length\' of undefined"', function() {
+        assert.throws(function() { getDataSucceeded(); }, TypeError, 'Cannot read property \'length\' of undefined');
+    });
+    it("can be created with an object as paraemter", function() {
+        getDataSucceeded({});
+    });
+});
+
+describe('getDataSuccess()', function () {
     const tests = [
         { data: [], expectedTodosLength: 0 },
         { data: [{ id: 1, name: 'me', isComplete: false}], expectedTodosLength: 1 },
@@ -53,7 +64,7 @@ describe('getDataSuccess()', function() {
     });
 });
 
-describe('getData()', function() {
+describe('getData()', function () {
     before(function() {        
         sandbox.stub(jQuery, "ajax");
         getData();
@@ -111,7 +122,13 @@ describe("addItemSucceeded()", function () {
     });
 });
 
-describe('deleteItem()', function() {
+describe('addItemFailed()', function () {
+    it('can be executed', function () {
+        addItemFailed();
+    });
+})
+
+describe('deleteItem()', function () {
     let element;
     before(function() {
         element = $('<div data-id="1">');
@@ -135,7 +152,7 @@ describe('deleteItem()', function() {
     });
 });
 
-describe('editItem()', function() {
+describe('editItem()', function () {
     let element;
     let spoiler;
     let editName;
@@ -218,7 +235,7 @@ describe('updateCount()', function () {
     });
 });
 
-describe('closeInput()', function() {
+describe('closeInput()', function () {
     let spoiler;
     before(function() {
         spoiler = $("<div id='spoiler'>");
@@ -237,7 +254,7 @@ describe('closeInput()', function() {
     });
 });
 
-describe('onSubmitForm()', function() {
+describe('onSubmitForm()', function () {
     var result;
     let editId;
     before(function() {
@@ -264,7 +281,7 @@ describe('onSubmitForm()', function() {
     });
 });
 
-describe('onReady()', function() {
+describe('onReady()', function () {
     let jqueryfunction;
     beforeEach(function() {
         jqueryfunction = $;
