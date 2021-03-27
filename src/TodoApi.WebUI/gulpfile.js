@@ -7,7 +7,7 @@ const rimraf = require("rimraf");
 const concat = require("gulp-concat");
 const cssmin = require("gulp-cssmin");
 const uglify = require("gulp-uglify");
-const Server  = require('karma').Server;
+const { Server, config } = require('karma');
 const ts = require("gulp-typescript");
 const tsProject = ts.createProject("typescript.json");
 
@@ -96,11 +96,9 @@ task("min:css", function() {
 
 task("min", series("min:js", "min:css"));
 
-task('test:js', function(done) {
-    new Server({
-        configFile: __dirname + "/karma.conf.js",
-        singleRun: true,
-    }, done).start();
+task('test:js', function(done) {    
+    new Server(config.parseConfig(__dirname + "/karma.conf.js", 
+                                  {singleRun: true}), done).start();
 });
 
 task("test", series("test:js", "test:dotnet"))
