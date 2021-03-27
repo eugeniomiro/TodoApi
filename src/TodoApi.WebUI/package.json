@@ -8,7 +8,8 @@
   },
   "nyc": {
     "exclude": [
-      "testSetup.js"
+      "testSetup.js",
+      "test/site.spec.js"
     ]
   },
   "repository": {
