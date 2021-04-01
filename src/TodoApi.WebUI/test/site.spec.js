@@ -22,18 +22,17 @@ if (typeof require !== 'undefined') {
         closeInput = site.closeInput,
         onSubmitForm = site.onSubmitForm,
         onReady = site.onReady;
-        expectedExceptionGetDataSucceeded = "Cannot read property \'length\' of undefined";
 } else {
+    window.alert = function() {};
     get_Todos = function() { return todos };
     set_Todos = function(newTodos) { todos = newTodos };
-    expectedExceptionGetDataSucceeded = 'data is undefined';
 }
 const sandbox = sinon.createSandbox();
 const todoApi = 'api/todo';
 
 describe('getDataSucceeded()', function() {
-    it('can not be executed with null parameter, it throws "TypeError: ' + expectedExceptionGetDataSucceeded + '"', function() {
-        assert.throws(function() { getDataSucceeded(); }, TypeError, expectedExceptionGetDataSucceeded);
+    it('can not be executed with null parameter, it throws "TypeError: data is undefined"', function() {
+        assert.throws(function() { getDataSucceeded(); }, TypeError, "data is undefined");
     });
     it("can be created with an object as paraemter", function() {
         getDataSucceeded({});

@@ -98,7 +98,9 @@ task("min", series("min:js", "min:css"));
 
 task('test:js', function(done) {    
     new Server(config.parseConfig(__dirname + "/karma.conf.js", 
-                                  {singleRun: true}), done).start();
+                                  {singleRun: true}), function() {
+                                      done()
+                                  }).start();
 });
 
 task("test", series("test:js", "test:dotnet"))

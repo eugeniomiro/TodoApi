@@ -3,6 +3,7 @@ const uri = 'api/todo';
 let todos = null;
 
 function getDataSuccess(data, updateCount) {
+    if (typeof data === 'undefined') throw new TypeError("data is undefined");
     $('#todos').empty();
     updateCount(data.length);
     $.each(data, function (key, item) {
