@@ -10,7 +10,8 @@
     "exclude": [
       "testSetup.js",
       "test/site.spec.js"
-    ]
+    ],
+    "reporter": ["text", "html"]
   },
   "repository": {
     "type": "git",
