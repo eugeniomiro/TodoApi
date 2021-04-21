@@ -13,16 +13,18 @@ const tsProject = ts.createProject("typescript.json");
 
 let version = `1.0.` + (process.env.BUILD_NUMBER || '0');
 let configuration = arg.config || process.env.BUILD_CONFIGURATION || 'Release';
-let webroot = "./public/";
+let clientApp = './';
+let serverApp = '../'
+let webroot = clientApp + "public/";
 let paths = {
-    js: "./js/**/*.js",
+    js: clientApp + "js/**/*.js",
     minJs: webroot + "js/**/*.min.js",
-    cmdLineArgs: "./js/cmdLineArgs.js",
-    css: "./css/**/*.css",
+    cmdLineArgs: clientApp + "js/cmdLineArgs.js",
+    css: clientApp + "css/**/*.css",
     minCss: webroot + "css/**/*.min.css",
-    csProjs: '**/*.csproj',
-    csTestProjs: '../**/*[Tt]est*.csproj',
-    csWebProject: 'TodoApi.WebUI.csproj',
+    csProjs: serverApp + '**/*.csproj',
+    csTestProjs: serverApp + '../**/*[Tt]est*.csproj',
+    csWebProject: serverApp + 'TodoApi.WebUI.csproj',
     concatJsDest: webroot + "js/site.min.js",
     concatCssDest: webroot + "css/site.min.css",
 };
