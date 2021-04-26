@@ -16,7 +16,7 @@
             "command": "gulp",
             "type": "process",
             "options": {
-                "cwd": "./src/TodoApi.WebUI"
+                "cwd": "./src/TodoApi.WebUI/ClientApp"
             },
             "args": [
                 "publish",

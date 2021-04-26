@@ -1,5 +1,8 @@
 {
-    "files": ["ts/main.ts"],
+    "files": [
+        "ts/main.ts",
+        "ts/polyfills.ts"
+    ],
     "compilerOptions": {
         "allowJs": true,
         "noImplicitAny": true,
