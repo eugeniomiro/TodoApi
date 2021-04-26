@@ -6,7 +6,8 @@
     "compilerOptions": {
         "allowJs": true,
         "noImplicitAny": true,
-        "target": "es5"
+        "target": "es5",
+        "experimentalDecorators": true
     },
     "include": ["./js/site.js"]
 }

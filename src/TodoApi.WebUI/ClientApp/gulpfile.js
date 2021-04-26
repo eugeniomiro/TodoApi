@@ -9,7 +9,7 @@ const cssmin = require("gulp-cssmin");
 const uglify = require("gulp-uglify");
 const { Server, config } = require('karma');
 const ts = require("gulp-typescript");
-const tsProject = ts.createProject("typescript.json");
+const tsProject = ts.createProject("tsconfig.json");
 
 let version = `1.0.` + (process.env.BUILD_NUMBER || '0');
 let configuration = arg.config || process.env.BUILD_CONFIGURATION || 'Release';
