@@ -14,14 +14,14 @@
                     "builder":"@angular-devkit/build-angular:browser",
                     "options": {
                         "progress": false,
-                        "outputPath": "dist",
-                        "index": "public/index.html",
+                        "outputPath": "public",
+                        "index": "ts/index.html",
                         "main": "ts/main.ts",
                         "polyfills": "ts/polyfills.ts",
                         "tsConfig": "ts/tsconfig.app.json",
                         "assets": ["ts/assets"],
                         "styles": [
-                            "public/css/site.min.css"
+                            "public.g/css/site.min.css"
                         ],
                         "scripts": []
                     },
@@ -41,6 +41,17 @@
                             "extractLicenses": true,
                             "vendorChunk": false,
                             "buildOptimizer": true
+                        }
+                    }
+                },
+                "serve": {
+                    "builder":"@angular-devkit/build-angular:dev-server",
+                    "options": {
+                        "browserTarget": "todo-api:production"
+                    },
+                    "configurations": {
+                        "production":{
+                            "browserTarget": "todo-api:build:production"
                         }
                     }
                 }

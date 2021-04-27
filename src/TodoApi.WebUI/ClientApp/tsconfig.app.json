@@ -9,5 +9,5 @@
         "target": "es5",
         "experimentalDecorators": true
     },
-    "include": ["./js/site.js"]
+    "include": ["./public.g/site.min.js"]
 }

@@ -6,7 +6,7 @@ node_modules/
 .nyc_output/
 coverage/
 TestResults/
-dist/
+public/
 
 #ignored files
 *.suo

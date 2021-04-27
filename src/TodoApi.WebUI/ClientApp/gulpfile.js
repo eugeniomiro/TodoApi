@@ -8,14 +8,13 @@ const concat = require("gulp-concat");
 const cssmin = require("gulp-cssmin");
 const uglify = require("gulp-uglify");
 const { Server, config } = require('karma');
-const ts = require("gulp-typescript");
-const tsProject = ts.createProject("tsconfig.json");
+const exec = require('child_process').exec;
 
 let version = `1.0.` + (process.env.BUILD_NUMBER || '0');
 let configuration = arg.config || process.env.BUILD_CONFIGURATION || 'Release';
 let clientApp = './';
 let serverApp = '../'
-let webroot = clientApp + "public/";
+let webroot = clientApp + "public.g/";
 let paths = {
     js: clientApp + "js/**/*.js",
     minJs: webroot + "js/**/*.min.js",
@@ -76,12 +75,6 @@ task("clean:css", function(cb) {
 
 task("clean", series("clean:js", "clean:css", "clean:dotnet"));
 
-task("build:ts", function() {
-    return tsProject.src()
-                    .pipe(tsProject()).js
-                    .pipe(dest("dist"));
-});
-
 task("min:js", function() {
     return src([paths.js, "!" + paths.minJs, "!" + paths.cmdLineArgs], { base: "." })
         .pipe(concat(paths.concatJsDest))
@@ -112,7 +105,14 @@ task('run:dotnet', series("test", ()=>{
                 .pipe(run());
 }));
 
-task("publish", series("build:ts", "clean", "min", "publish:dotnet"));
+task("copy:legacy:assets", function(done){
+    src(paths.minCss).pipe(dest(clientApp + "public/css"));
+    src(paths.minJs).pipe(dest(clientApp + "public/js"));
+    src(clientApp + "favicon.ico").pipe(dest(clientApp + "public/"))
+    done();
+});
+
+task("publish", series("clean", "min", "publish:dotnet", "copy:legacy:assets"));
 
 task('tdd', function(done) {
     new Server({

@@ -28,7 +28,7 @@ namespace TodoApi.WebUI
             services.AddScoped<ITodoRepository, TodoRepository>();
             services.AddControllersWithViews();
             services.AddSpaStaticFiles(configuration => {
-                configuration.RootPath = "ClientApp/dist";
+                configuration.RootPath = "public";
             });
         }
 
