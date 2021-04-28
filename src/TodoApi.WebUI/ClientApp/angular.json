@@ -54,6 +54,21 @@
                             "browserTarget": "todo-api:build:production"
                         }
                     }
+                },
+                "test": {
+                    "builder": "@angular-devkit/build-angular:karma",
+                    "options": {
+                      "main": "ts/test.ts",
+                      "polyfills": "ts/polyfills.ts",
+                      "tsConfig": "tsconfig.spec.json",
+                      "karmaConfig": "karma.conf.js",
+                      "assets": [
+                        "ts/favicon.ico",
+                        "ts/assets"
+                      ],
+                      "styles": [],
+                      "scripts": []
+                    }          
                 }
             }
         }

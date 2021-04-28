@@ -108,7 +108,6 @@ task('run:dotnet', series("test", ()=>{
 task("copy:legacy:assets", function(done){
     src(paths.minCss).pipe(dest(clientApp + "public/css"));
     src(paths.minJs).pipe(dest(clientApp + "public/js"));
-    src(clientApp + "favicon.ico").pipe(dest(clientApp + "public/"))
     done();
 });
 
