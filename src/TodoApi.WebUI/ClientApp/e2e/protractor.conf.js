@@ -11,12 +11,12 @@ exports.config = {
     ],
     baseUrl: 'http://localhost:4200/',
     capabilities: {
-        browserName: 'chrome'
+        browserName: 'firefox'
     },
     directConnect: true,
     framework: 'mocha',
     mochaOpts: {
-        reoirter: "spec",
+        reporter: "spec",
         slow: 3000,
         ui: 'bdd',
         timeout: 30000
