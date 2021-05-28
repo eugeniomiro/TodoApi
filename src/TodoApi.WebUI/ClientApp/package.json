@@ -33,6 +33,7 @@
   },
   "homepage": "https://github.com/eugeniomiro/TodoApi#readme",
   "devDependencies": {
+    "@adamwood/gulp-cssmin": "^0.2.1",
     "@angular-devkit/build-angular": "^0.1102.10",
     "@angular-eslint/builder": "4.2.0",
     "@angular-eslint/eslint-plugin": "4.2.0",
@@ -56,7 +57,6 @@
     "eslint-plugin-prefer-arrow": "latest",
     "gulp": "^4.0.2",
     "gulp-concat": "^2.6.1",
-    "gulp-cssmin": "^0.2.0",
     "gulp-dotnet-cli": "^1.1.0",
     "gulp-typescript": "^6.0.0-alpha.1",
     "gulp-uglify": "^3.0.2",
