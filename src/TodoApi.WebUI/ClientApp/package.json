@@ -34,7 +34,7 @@
   "homepage": "https://github.com/eugeniomiro/TodoApi#readme",
   "devDependencies": {
     "@adamwood/gulp-cssmin": "^0.2.1",
-    "@angular-devkit/build-angular": "^0.1102.10",
+    "@angular-devkit/build-angular": "^20.0.1",
     "@angular-eslint/builder": "4.2.0",
     "@angular-eslint/eslint-plugin": "4.2.0",
     "@angular-eslint/eslint-plugin-template": "4.2.0",
